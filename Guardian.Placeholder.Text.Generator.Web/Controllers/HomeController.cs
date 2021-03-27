@@ -1,4 +1,5 @@
-﻿using Guardian.Placeholder.Text.Generator.Web.Models;
+﻿using AngleSharp;
+using Guardian.Placeholder.Text.Generator.Web.Models;
 using Guardian.Text.Generator.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -52,6 +53,33 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private static async Task<List<string>> GetPageData(string url)
+        {
+            List<string> results = new List<string>();
+            // Load default configuration
+            var config = Configuration.Default.WithDefaultLoader();
+            // Create a new browsing context
+            var context = BrowsingContext.New(config);
+            // This is where the HTTP request happens, returns <IDocument> that // we can query later
+            var document = await context.OpenAsync(url);
+
+            var articleCopyRows = document.QuerySelectorAll("p");
+
+            foreach (var copy in articleCopyRows)
+            {
+                if (copy.InnerHtml.Contains(_htmlRegex))
+                {
+                    results.Add(RemoveHtmlFromCopy(copy.InnerHtml));
+                }
+                if (!string.IsNullOrEmpty(copy.InnerHtml) && !copy.InnerHtml.Contains("modified"))
+                {
+                    results.Add(copy.InnerHtml);
+                }
+            }
+
+            return results;
         }
 
         public static string RemoveHtmlFromCopy(string innerHtml)
