@@ -1,4 +1,5 @@
 ﻿using Guardian.Placeholder.Text.Generator.Web.Models;
+using Guardian.Text.Generator.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,7 +19,14 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(CharacterSubmission value)
         {
             return View();
         }
