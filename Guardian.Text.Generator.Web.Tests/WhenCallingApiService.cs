@@ -35,21 +35,26 @@ namespace Guardian.Text.Generator.Web.Tests
         {
             // Arrange
             HomeController.GetRandomPageNumber();
-
             // Act
             var actual = await HomeController.SendGuardianRequest();
             HomeController.MapJsonToArticleModel(actual);
-
             // Assert
             Assert.IsNotNull(HomeController._articles);
+            Assert.AreEqual("football", HomeController._articles.response.results[0].sectionName.ToLower());
+            Assert.AreEqual(10, HomeController._articles.response.results.Length);
         }
 
         [Test]
-        public static void And_Selecting_Random_Entry_From_Model_Collection()
+        public static async Task And_Selecting_Random_Entry_From_Model_Collection()
         {
             // Arrange
+            HomeController.GetRandomPageNumber();
             // Act
+            var actual = await HomeController.SendGuardianRequest();
+            HomeController.MapJsonToArticleModel(actual);
+            HomeController.SelectRandomSingleArticleFromCollection();
             // Assert
+            Assert.IsNotNull(HomeController._article);
         }
     }
 }
