@@ -16,6 +16,7 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private static readonly string _htmlRegex = "[<][^<>]*[>]";
+        public static int _page;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -88,5 +89,10 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             return cleanedCopy;
         }
 
+        public static void GetRandomPageNumber()
+        {
+            Random rand = new Random();
+            _page = rand.Next(1, 100);
+        }
     }
 }

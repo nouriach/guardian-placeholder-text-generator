@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Guardian.Placeholder.Text.Generator.Web.Controllers;
 
 namespace Guardian.Text.Generator.Web.Tests
 {
@@ -11,8 +12,10 @@ namespace Guardian.Text.Generator.Web.Tests
         public static void And_Selecting_Random_Page_Number()
         {
             // Arrange
+            HomeController.GetRandomPageNumber();
             // Act
             // Assert
+            Assert.IsFalse(HomeController._page == 0);
         }
 
         [Test]
