@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Guardian.Placeholder.Text.Generator.Web.Controllers;
+using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Tests
 {
@@ -22,16 +23,25 @@ namespace Guardian.Text.Generator.Web.Tests
         public static void And_Sending_Request_With_Random_Page_Number()
         {
             // Arrange
+            HomeController.GetRandomPageNumber();
             // Act
+            var actual = HomeController.SendGuardianRequest();
             // Assert
+            Assert.IsNotNull(actual.Result);
         }
 
         [Test]
-        public static void And_Storing_Results_In_Model_Collection()
+        public static async Task And_Storing_Results_In_Model_CollectionAsync()
         {
             // Arrange
+            HomeController.GetRandomPageNumber();
+
             // Act
+            var actual = await HomeController.SendGuardianRequest();
+            HomeController.MapJsonToArticleModel(actual);
+
             // Assert
+            Assert.IsNotNull(HomeController._articles);
         }
 
         [Test]
