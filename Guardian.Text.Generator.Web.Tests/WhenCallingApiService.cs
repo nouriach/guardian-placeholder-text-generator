@@ -25,7 +25,7 @@ namespace Guardian.Text.Generator.Web.Tests
             // Arrange
             HomeController.GetRandomPageNumber();
             // Act
-            var actual = HomeController.SendGuardianRequest();
+            var actual = HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
             // Assert
             Assert.IsNotNull(actual.Result);
         }
@@ -36,7 +36,7 @@ namespace Guardian.Text.Generator.Web.Tests
             // Arrange
             HomeController.GetRandomPageNumber();
             // Act
-            var actual = await HomeController.SendGuardianRequest();
+            var actual = await HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
             HomeController.MapJsonToArticleModel(actual);
             // Assert
             Assert.IsNotNull(HomeController._articles);
@@ -50,7 +50,7 @@ namespace Guardian.Text.Generator.Web.Tests
             // Arrange
             HomeController.GetRandomPageNumber();
             // Act
-            var actual = await HomeController.SendGuardianRequest();
+            var actual = await HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
             HomeController.MapJsonToArticleModel(actual);
             HomeController.SelectRandomSingleArticleFromCollection();
             // Assert
