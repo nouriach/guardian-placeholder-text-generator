@@ -8,11 +8,14 @@ namespace Guardian.Text.Generator.Web.Tests
     public class WhenWebScraping
     {
         [SetUp]
-        public async Task Setup()
+        public static void Setup()
         {
+            // Arrange
             HomeController.GetRandomPageNumber();
-            var actual = await HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
-            HomeController.MapJsonToArticleModel(actual);
+            var url = HomeController.BuildApiCall();
+            // Act
+            var actual = HomeController.SendGuardianRequest(url);
+            HomeController.MapJsonToArticleModel(actual.Result);
             HomeController.SelectRandomSingleArticleFromCollection();
         }
 
@@ -20,11 +23,12 @@ namespace Guardian.Text.Generator.Web.Tests
         public void And_Values_Are_Stored_In_A_Collection()
         {
             //// Arrange
-            //var url = $"{HomeController._article.webUrl}";
+            var url = $"{HomeController._article.webUrl}";
             //// Act
-            //HomeController.GetPageData(url);
-            //// "https://www.theguardian.com/football/2020/aug/04/football-transfer-rumour-mill-chelsea-18m-reguilon-chilwell"
+            var result = HomeController.GetPageData(url);
+
             //// Assert
+            Assert.IsTrue(result.Result.Count > 0);
         }
 
         [Test]
@@ -68,6 +72,20 @@ namespace Guardian.Text.Generator.Web.Tests
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public async Task And_Placeholder_Text_Is_Set_And_Matches_Character_Count_Request()
+        {
+            // Arrange
+            var url = $"{HomeController._article.webUrl}";
+            HomeController._characterCountRequest = 30;
+            // Act
+            var result = await HomeController.GetPageData(url);
+            HomeController.BuildPlaceHolderText(result);
+            // Assert
+            Assert.AreEqual(HomeController._placeholderText.Length, HomeController._characterCountRequest);
+            //Assert.AreEqual(HomeController._placeholderText, "Test");
         }
     }
 }
