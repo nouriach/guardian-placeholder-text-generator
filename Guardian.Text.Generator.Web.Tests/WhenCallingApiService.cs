@@ -24,20 +24,22 @@ namespace Guardian.Text.Generator.Web.Tests
         {
             // Arrange
             HomeController.GetRandomPageNumber();
+            var url = HomeController.BuildApiCall();
             // Act
-            var actual = HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
+            var actual = HomeController.SendGuardianRequest(url);
             // Assert
             Assert.IsNotNull(actual.Result);
         }
 
         [Test]
-        public static async Task And_Storing_Results_In_Model_CollectionAsync()
+        public static void And_Storing_Results_In_Model_CollectionAsync()
         {
             // Arrange
             HomeController.GetRandomPageNumber();
+            var url = HomeController.BuildApiCall();
             // Act
-            var actual = await HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
-            HomeController.MapJsonToArticleModel(actual);
+            var actual = HomeController.SendGuardianRequest(url);
+            HomeController.MapJsonToArticleModel(actual.Result);
             // Assert
             Assert.IsNotNull(HomeController._articles);
             Assert.AreEqual("football", HomeController._articles.response.results[0].sectionName.ToLower());
@@ -45,16 +47,34 @@ namespace Guardian.Text.Generator.Web.Tests
         }
 
         [Test]
-        public static async Task And_Selecting_Random_Entry_From_Model_Collection()
+        public static void And_Selecting_Random_Entry_From_Model_Collection()
         {
             // Arrange
             HomeController.GetRandomPageNumber();
+            var url = HomeController.BuildApiCall();
             // Act
-            var actual = await HomeController.SendGuardianRequest("https://content.guardianapis.com/search?pages=1&tag=football/football");
-            HomeController.MapJsonToArticleModel(actual);
+            var actual = HomeController.SendGuardianRequest(url);
+            HomeController.MapJsonToArticleModel(actual.Result);
             HomeController.SelectRandomSingleArticleFromCollection();
             // Assert
             Assert.IsNotNull(HomeController._article);
+        }
+
+        [Test]
+        [TestCase(15)]
+        [TestCase(5)]
+        [TestCase(600)]
+        [TestCase(82)]
+
+        public static void And_Setting_Character_Count_Request(int expected)
+        {
+            // arrange
+            // act
+            HomeController.SetCharacterCountRequest(expected);
+            var actual = HomeController._characterCountRequest;
+            // assert
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
