@@ -17,9 +17,9 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
             ContentResult = result;
         }
 
-        public AuthorViewModel Author { get; }
-        public ContentRequestViewModel ContentRequest { get; }
-        public ContentResultViewModel ContentResult { get; }
+        public AuthorViewModel Author { get; set;  }
+        public ContentRequestViewModel ContentRequest { get; set;  }
+        public ContentResultViewModel ContentResult { get; set;  }
 
     }
 }

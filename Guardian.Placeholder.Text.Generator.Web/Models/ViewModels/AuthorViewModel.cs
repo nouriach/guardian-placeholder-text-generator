@@ -7,6 +7,10 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
 {
     public class AuthorViewModel
     {
+        public AuthorViewModel()
+        {
+
+        }
         public AuthorViewModel(string name)
         {
             FirstName = name;

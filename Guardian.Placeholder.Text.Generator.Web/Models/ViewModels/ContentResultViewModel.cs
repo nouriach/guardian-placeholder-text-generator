@@ -7,6 +7,10 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
 {
     public class ContentResultViewModel
     {
+        public ContentResultViewModel()
+        {
+
+        }
         public ContentResultViewModel(string result)
         {
             Content = result;
