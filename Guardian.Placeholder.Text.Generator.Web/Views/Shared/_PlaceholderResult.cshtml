@@ -1,6 +1,14 @@
 ﻿@model Guardian.Text.Generator.Web.Models.ViewModels.ContentResultViewModel;
 
-
-<p>@Model.Content</p>
+@{       
+    if (string.IsNullOrEmpty(Model.Content) )
+    {
+        <p>Awaiting result...</p>
+    }
+    else
+    {
+        <p>@Model.Content</p>
+    }
+}
 
 

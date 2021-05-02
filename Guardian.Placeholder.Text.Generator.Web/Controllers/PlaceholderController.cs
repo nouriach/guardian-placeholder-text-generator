@@ -25,7 +25,10 @@ namespace Guardian.Text.Generator.Web.Controllers
         {
             HomepageViewModel vm = new HomepageViewModel()
             {
-                Prompt = "Choose character count"
+                Prompt = "Choose character count",
+                Author = new AuthorViewModel(),
+                ContentRequest = new ContentRequestViewModel(),
+                ContentResult = new ContentResultViewModel()
             };
 
             return View(vm);
