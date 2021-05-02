@@ -1,65 +1,64 @@
 ﻿using AngleSharp;
-using Guardian.Placeholder.Text.Generator.Web.Models;
+using Guardian.Text.Generator.Web.Application.Interfaces;
+using Guardian.Text.Generator.Web.Application.Queries;
 using Guardian.Text.Generator.Web.Models;
-using Guardian.Text.Generator.Web.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using MediatR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Guardian.Placeholder.Text.Generator.Web.Controllers
+namespace Guardian.Text.Generator.Web.Application.Handlers
 {
-    public class HomeController : Controller
+    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, string>
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IArticleService _service;
 
         private static readonly string _htmlRegex = "[<][^<>]*[>]";
 
-        public static Rootobject _articles;
-        public static Article _article;
+        private static Rootobject _articles;
+        private static Article _article;
 
-        public static List<string> _copy;
+        private static List<string> _copy;
 
+        private static int _characterCountRequest;
 
-        public static int _characterCountRequest;
+        // Can this all be stored like in the below
+        // https://github.com/nouriach/Police_Data_Api/blob/master/policeDataApi_Practice/Startup.cs
+        // https://github.com/nouriach/Police_Data_Api/blob/master/policeDataApi_Practice/appsettings.json
 
-        public static string _urlBase = "https://content.guardianapis.com/search?";
-        public static int _page;
-        public static string _pageRequest = $"page=";
-        public static string _query = "q=barney-ronay";
-        public static string _queryDate = "from-date=2018-01-01";
-        public static string _apiKey = "api-key=0ff89a23-392e-4b15-ad61-da8b70a6abd1";
+        private static string _urlBase = "https://content.guardianapis.com/search?";
+        private static int _page;
+        private static string _pageRequest = $"page=";
+        private static string _query = "q=barney-ronay";
+        private static string _queryDate = "from-date=2018-01-01";
+        private static string _apiKey = "api-key=0ff89a23-392e-4b15-ad61-da8b70a6abd1";
 
-        public static string _placeholderText;
+        private static string _placeholderText;
 
-        public HomeController(ILogger<HomeController> logger)
+        public GetAllArticlesQueryHandler(IArticleService service)
         {
-            _logger = logger;
+            _service = service;
         }
 
-
-        [HttpGet]
-        public IActionResult Index()
+        // This should return a ViewModel
+        public async Task<string> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
-            // var result = await GetPageData("https://www.theguardian.com/football/2021/mar/27/harry-kane-shuts-out-noise-to-fix-focus-pivotal-summer-england-euros");
-            return View();
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(CharacterSubmission req)
-        {
-            // Make the API Call
-            SetCharacterCountRequest(Convert.ToInt32(req.Count));
+            // Single Responsibility: have the below been separated into new classes?
+
+            // Make the API call
+            SetCharacterCountRequest(Convert.ToInt32(request.CharacterCount));
             GetRandomPageNumber();
             var jsonString = await SendGuardianRequest(BuildApiCall());
             MapJsonToArticleModel(jsonString);
+           
+            // Get a single article
             SelectRandomSingleArticleFromCollection();
 
             // Use the result of the API call to web scrape content
@@ -68,34 +67,26 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             // Build the content to match the length of the character request
             BuildPlaceHolderText(content);
 
-            // Make a new View Model
-            ContentResultViewModel crvm = new ContentResultViewModel(_placeholderText);
-            AuthorViewModel avm = new AuthorViewModel("Nathan");
-            HomepageViewModel hvm = new HomepageViewModel(null, null, null);
-
-            return RedirectToAction("PlaceholderResult", hvm);
+            // Make a new View Model to return?
+            return _placeholderText;
         }
-
-        public IActionResult PlaceholderResult(ContentResultViewModel vm)
-        {
-            return View(vm);
-        }
-
-        // MAKING THE API CALL
         public static void SetCharacterCountRequest(int count)
         {
             _characterCountRequest = count;
         }
+
         public static void GetRandomPageNumber()
         {
             Random rand = new Random();
             _page = rand.Next(1, 10);
         }
+
         public static string BuildApiCall()
         {
             var url = $"{_urlBase}{_pageRequest}{_page}&{_query}&{_queryDate}&{_apiKey}";
             return url;
         }
+
         public static async Task<string> SendGuardianRequest(string url)
         {
             // need to add some sort of check on the success status
@@ -112,7 +103,6 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             Random rand = new Random();
             _article = _articles.response.results[rand.Next(0, _articles.response.results.Length)];
         }
-
 
         // WEBSCRAPING AN ARTICLE
         public static async Task<List<string>> GetPageData(string url)
@@ -140,7 +130,6 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             return _copy;
         }
 
-
         public static bool CheckIfCopyContainsHtml(string copy)
         {
             if (Regex.IsMatch(copy, _htmlRegex))
@@ -149,7 +138,7 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             }
             else
             {
-               return false;
+                return false;
             }
         }
 
@@ -159,18 +148,17 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             return cleanedCopy;
         }
 
-        // Build Placeholder Text
         public static void BuildPlaceHolderText(List<string> result)
         {
             StringBuilder buildCopy = new StringBuilder();
             int count = 0;
 
-            foreach(var sentence in result)
+            foreach (var sentence in result)
             {
                 var characters = sentence.ToCharArray();
                 foreach (var ch in characters)
                 {
-                    if(count < _characterCountRequest)
+                    if (count < _characterCountRequest)
                     {
                         count++;
                         buildCopy.Append(ch);
@@ -181,21 +169,8 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
                     }
                 }
             }
-            
+
             _placeholderText = buildCopy.ToString();
         }
-
-        // MISC
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
     }
 }

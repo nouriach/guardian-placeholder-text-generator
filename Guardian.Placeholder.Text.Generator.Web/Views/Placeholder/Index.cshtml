@@ -1,0 +1,14 @@
+﻿@model Guardian.Text.Generator.Web.Models.ViewModels.HomepageViewModel;
+
+<div class="container">
+    <h4 class="display-4">@Model.Prompt</h4>
+    <form method="post" asp-controller="Placeholder" asp-action="Index">
+        <div class="form-group">
+            <label asp-for="@Model.Request"></label>
+            <input asp-for="@Model.Request" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Choose Count" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

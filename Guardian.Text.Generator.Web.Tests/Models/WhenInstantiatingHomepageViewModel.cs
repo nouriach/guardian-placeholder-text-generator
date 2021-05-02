@@ -36,7 +36,7 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         {
             // Arrange
             AuthorViewModel author = new AuthorViewModel(name);
-            ContentRequestViewModel req = new ContentRequestViewModel(count);
+            ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count} ;
             // Act
             HomepageViewModel vm = new HomepageViewModel(author, req, null);
             // Assert
@@ -53,7 +53,7 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         {
             // Arrange
             AuthorViewModel author = new AuthorViewModel(name);
-            ContentRequestViewModel req = new ContentRequestViewModel(count);
+            ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count };
             ContentResultViewModel res = new ContentResultViewModel(result);
             // Act
             HomepageViewModel vm = new HomepageViewModel(author, req, res);
