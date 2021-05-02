@@ -28,16 +28,6 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
 
         private static int _characterCountRequest;
 
-        // Can this all be stored like in the below
-        // https://github.com/nouriach/Police_Data_Api/blob/master/policeDataApi_Practice/Startup.cs
-        // https://github.com/nouriach/Police_Data_Api/blob/master/policeDataApi_Practice/appsettings.json
-
-        private static string _urlBase = "https://content.guardianapis.com/search?";
-        private static int _page;
-        private static string _pageRequest = $"page=";
-        private static string _query = "q=barney-ronay";
-        private static string _queryDate = "from-date=2018-01-01";
-        private static string _apiKey = "api-key=0ff89a23-392e-4b15-ad61-da8b70a6abd1";
 
         private static string _placeholderText;
 
@@ -51,12 +41,9 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
         {
 
             // Single Responsibility: have the below been separated into new classes?
-
-            // Make the API call
             SetCharacterCountRequest(Convert.ToInt32(request.CharacterCount));
-            GetRandomPageNumber();
-            var jsonString = await SendGuardianRequest(BuildApiCall());
-            MapJsonToArticleModel(jsonString);
+
+            _articles = _service.GetArticlesAsync(request).Result;
            
             // Get a single article
             SelectRandomSingleArticleFromCollection();
@@ -75,29 +62,6 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
             _characterCountRequest = count;
         }
 
-        public static void GetRandomPageNumber()
-        {
-            Random rand = new Random();
-            _page = rand.Next(1, 10);
-        }
-
-        public static string BuildApiCall()
-        {
-            var url = $"{_urlBase}{_pageRequest}{_page}&{_query}&{_queryDate}&{_apiKey}";
-            return url;
-        }
-
-        public static async Task<string> SendGuardianRequest(string url)
-        {
-            // need to add some sort of check on the success status
-            HttpClient client = new HttpClient();
-            var result = await client.GetStringAsync(url);
-            return result;
-        }
-        public static void MapJsonToArticleModel(string content)
-        {
-            _articles = JsonConvert.DeserializeObject<Rootobject>(content);
-        }
         public static void SelectRandomSingleArticleFromCollection()
         {
             Random rand = new Random();

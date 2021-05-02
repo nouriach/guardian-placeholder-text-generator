@@ -1,5 +1,6 @@
 ﻿using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Infrastructure.Api;
 using Guardian.Text.Generator.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ namespace Guardian.Text.Generator.Web.Application.Services
 {
     public class ArticleService : IArticleService
     {
-        public Task<Rootobject> GetArticlesAsync(GetAllArticlesQuery query)
+
+        public async Task<Rootobject> GetArticlesAsync(GetAllArticlesQuery query)
         {
-            throw new NotImplementedException();
+            var result = await ApiService.SendRequestAndGetArticles();
+            return result;
         }
     }
 }
