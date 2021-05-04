@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Tests
 {
-    public class WhenCallingApiService
+    public class WhenTrialingApiService
     {
         [Test]
         public static void And_Selecting_Random_Page_Number()
