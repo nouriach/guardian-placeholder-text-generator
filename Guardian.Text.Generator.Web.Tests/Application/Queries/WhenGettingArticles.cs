@@ -24,7 +24,7 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
 
         private Mock<IArticleService> _mockService;
 
-        private GetAllArticlesQueryHandler InstantiateQueryHandler()
+        private GetAllArticlesQueryHandler InstantiateQueryHandlerWithInterface()
         {
             _mockService = new Mock<IArticleService>();
             var sut = new GetAllArticlesQueryHandler(_mockService.Object);
@@ -38,22 +38,50 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
         [TestCase("300")]
         [TestCase("150")]
         [TestCase("200")]
-        public void QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsString(string characterCount)
+        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsString(string characterCount)
         {
             // Arrange
-            IArticleService serv = new ArticleService();
-            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv);
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
                 CharacterCount = characterCount
             };
 
+            IArticleService serv = new ArticleService();
+            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv);
+
             // Act
-            var result = sut.Handle(query, CancellationToken.None);
+            var result = await sut.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.IsInstanceOf<string>(result.Result);
+            Assert.IsInstanceOf<string>(result);
+        }
+
+        [Test]
+        [TestCase("350")]
+        [TestCase("250")]
+        [TestCase("100")]
+        [TestCase("300")]
+        [TestCase("150")]
+        [TestCase("200")]
+        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount)
+        {
+            // Arrange
+
+            GetAllArticlesQuery query = new GetAllArticlesQuery()
+            {
+                CharacterCount = characterCount
+            };
+
+            IArticleService serv = new ArticleService();
+            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv);
+
+            // Act
+            var expected = Convert.ToInt32(characterCount);
+            var result = await sut.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual(expected, result.Length);
         }
 
         [Test]
@@ -61,7 +89,7 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
         {
             GetAllArticlesQuery query = new GetAllArticlesQuery();
 
-            GetAllArticlesQueryHandler sut = InstantiateQueryHandler();
+            GetAllArticlesQueryHandler sut = InstantiateQueryHandlerWithInterface();
 
             var result = sut.Handle(query, CancellationToken.None);
             Rootobject expected = new Rootobject();

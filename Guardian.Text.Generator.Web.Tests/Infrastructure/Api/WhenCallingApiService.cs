@@ -17,9 +17,21 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
         {
             //Arrange
             //Act
-            var actual = ApiService.SendRequestAndGetArticles();
+            var result = ApiService.SendRequestAndGetArticles();
+            var actual = result.Result.response.results.Length;
+            var expected = 10;
             //Assert
-            Assert.AreEqual(actual.Result.response.results.Length, 10);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public static void And_Result_Returns_Correct_Dto()
+        {
+            //Arrange
+            //Act
+            var result = ApiService.SendRequestAndGetArticles();
+            //Assert
+            Assert.IsInstanceOf<Rootobject>(result.Result);
         }
     }
 }
