@@ -18,18 +18,9 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
     public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, string>
     {
         private readonly IArticleService _service;
+        private static Random _rand = new Random();
 
         private static readonly string _htmlRegex = "[<][^<>]*[>]";
-
-        private static Rootobject _articles;
-        private static Article _article;
-
-        private static List<string> _copy;
-
-        private static int _characterCountRequest;
-
-
-        private static string _placeholderText;
 
         public GetAllArticlesQueryHandler(IArticleService service)
         {
@@ -39,39 +30,30 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
         // This should return a ViewModel
         public async Task<string> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
+            int characterCount = Convert.ToInt32(request.CharacterCount);
 
-            // Single Responsibility: have the below been separated into new classes?
-            SetCharacterCountRequest(Convert.ToInt32(request.CharacterCount));
+            var articles = await _service.GetArticlesAsync(request);
 
-            _articles = _service.GetArticlesAsync(request).Result;
-           
-            // Get a single article
-            SelectRandomSingleArticleFromCollection();
+            var article = articles.response.results[_rand.Next(0, articles.response.results.Length)];
 
             // Use the result of the API call to web scrape content
-            var content = await GetPageData(_article.webUrl);
+            // articlePageContent = await _webscrapeService.GetContent();
+            var content = await GetPageData(article.webUrl);
 
             // Build the content to match the length of the character request
-            BuildPlaceHolderText(content);
+            // Result r = new Result(content, characterCount);
+                // constructor will deal with it
+            // return r;
+            string _placeholderText = BuildPlaceHolderText(content, characterCount);
 
             // Make a new View Model to return?
             return _placeholderText;
-        }
-        public static void SetCharacterCountRequest(int count)
-        {
-            _characterCountRequest = count;
-        }
-
-        public static void SelectRandomSingleArticleFromCollection()
-        {
-            Random rand = new Random();
-            _article = _articles.response.results[rand.Next(0, _articles.response.results.Length)];
         }
 
         // WEBSCRAPING AN ARTICLE
         public static async Task<List<string>> GetPageData(string url)
         {
-            _copy = new List<string>();
+            List<string> copy = new List<string>();
 
             // Load default configuration
             var config = Configuration.Default.WithDefaultLoader();
@@ -82,16 +64,16 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
 
             var articleCopyRows = document.QuerySelectorAll("p");
 
-            foreach (var copy in articleCopyRows)
+            foreach (var c in articleCopyRows)
             {
-                if (!string.IsNullOrEmpty(copy.InnerHtml) && !copy.InnerHtml.Contains("modified"))
+                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
                 {
-                    var result = CheckIfCopyContainsHtml(copy.InnerHtml) ? RemoveHtmlFromCopy(copy.InnerHtml) : copy.InnerHtml;
-                    _copy.Add(result);
+                    var result = CheckIfCopyContainsHtml(c.InnerHtml) ? RemoveHtmlFromCopy(c.InnerHtml) : c.InnerHtml;
+                    copy.Add(result);
                 }
             }
 
-            return _copy;
+            return copy;
         }
 
         public static bool CheckIfCopyContainsHtml(string copy)
@@ -112,7 +94,7 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
             return cleanedCopy;
         }
 
-        public static void BuildPlaceHolderText(List<string> result)
+        public string BuildPlaceHolderText(List<string> result, int maxCount)
         {
             StringBuilder buildCopy = new StringBuilder();
             int count = 0;
@@ -122,7 +104,7 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
                 var characters = sentence.ToCharArray();
                 foreach (var ch in characters)
                 {
-                    if (count < _characterCountRequest)
+                    if (buildCopy.ToString().Length < maxCount)
                     {
                         count++;
                         buildCopy.Append(ch);
@@ -134,7 +116,7 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
                 }
             }
 
-            _placeholderText = buildCopy.ToString();
+            return buildCopy.ToString();
         }
     }
 }
