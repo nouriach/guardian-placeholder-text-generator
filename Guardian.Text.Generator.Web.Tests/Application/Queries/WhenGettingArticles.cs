@@ -3,15 +3,11 @@ using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries;
 using Guardian.Text.Generator.Web.Models;
 using Moq;
-using AutoFixture;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using NUnit.Framework;
-using AutoFixture.Xunit2;
 using Guardian.Text.Generator.Web.Application.Services;
 
 namespace Guardian.Text.Generator.Web.Tests.Application.Queries
