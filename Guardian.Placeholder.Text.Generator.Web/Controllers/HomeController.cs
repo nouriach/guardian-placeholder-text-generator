@@ -53,10 +53,10 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(CharacterSubmission value)
+        public async Task<IActionResult> Index(CharacterSubmission req)
         {
             // Make the API Call
-            SetCharacterCountRequest(Convert.ToInt32(value.Count));
+            SetCharacterCountRequest(Convert.ToInt32(req.Count));
             GetRandomPageNumber();
             var jsonString = await SendGuardianRequest(BuildApiCall());
             MapJsonToArticleModel(jsonString);
@@ -69,12 +69,14 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             BuildPlaceHolderText(content);
 
             // Make a new View Model
-            PlaceHolderTextResult vm = new PlaceHolderTextResult() { Content = _placeholderText };
+            ContentResultViewModel crvm = new ContentResultViewModel(_placeholderText);
+            AuthorViewModel avm = new AuthorViewModel("Nathan");
+            HomepageViewModel hvm = new HomepageViewModel(null, null, null);
 
-            return RedirectToAction("PlaceholderResult", vm);
+            return RedirectToAction("PlaceholderResult", hvm);
         }
 
-        public IActionResult PlaceholderResult(PlaceHolderTextResult vm)
+        public IActionResult PlaceholderResult(ContentResultViewModel vm)
         {
             return View(vm);
         }

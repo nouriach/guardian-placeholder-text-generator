@@ -1,3 +1,7 @@
+using Guardian.Text.Generator.Web.Application.Interfaces;
+using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Application.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +28,9 @@ namespace Guardian.Placeholder.Text.Generator.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMediatR(typeof(GetAllArticlesQuery).Assembly);
+            services.AddScoped<IArticleService, ArticleService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
