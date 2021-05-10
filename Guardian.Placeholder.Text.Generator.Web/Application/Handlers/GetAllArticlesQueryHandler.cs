@@ -1,6 +1,7 @@
 ﻿using AngleSharp;
 using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Extensions;
 using Guardian.Text.Generator.Web.Models;
 using MediatR;
 using Newtonsoft.Json;
@@ -68,30 +69,12 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
             {
                 if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
                 {
-                    var result = CheckIfCopyContainsHtml(c.InnerHtml) ? RemoveHtmlFromCopy(c.InnerHtml) : c.InnerHtml;
+                    var result = c.InnerHtml.CheckIfCopyContainsHtml() ? c.InnerHtml.RemoveHtmlFromString() : c.InnerHtml;
                     copy.Add(result);
                 }
             }
 
             return copy;
-        }
-
-        public static bool CheckIfCopyContainsHtml(string copy)
-        {
-            if (Regex.IsMatch(copy, _htmlRegex))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static string RemoveHtmlFromCopy(string innerHtml)
-        {
-            string cleanedCopy = Regex.Replace(innerHtml, _htmlRegex, "").Trim();
-            return cleanedCopy;
         }
 
         public string BuildPlaceHolderText(List<string> result, int maxCount)
