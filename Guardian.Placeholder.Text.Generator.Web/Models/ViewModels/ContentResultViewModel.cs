@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Guardian.Text.Generator.Web.Application.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
         {
 
         }
-        public ContentResultViewModel(string result)
+        public ContentResultViewModel(GetArticleResult result)
         {
-            Content = result;
+            Content = result.Content;
         }
         public string Content { get; }
     }
