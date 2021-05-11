@@ -30,6 +30,7 @@ namespace Guardian.Placeholder.Text.Generator.Web
             services.AddControllersWithViews();
             services.AddMediatR(typeof(GetAllArticlesQuery).Assembly);
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<IWebscrapeService, WebscrapeService>();
 
         }
 
