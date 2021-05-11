@@ -9,21 +9,25 @@ using System.Threading.Tasks;
 using System.Linq;
 using NUnit.Framework;
 using Guardian.Text.Generator.Web.Application.Services;
+using System.Collections.Generic;
+using Guardian.Text.Generator.Web.Application.Results;
 
-namespace Guardian.Text.Generator.Web.Tests.Application.Queries
+namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
 {
-    public class WhenGettingArticles
+    public class WhenUsingGetAllArticlesQueryHandler
     {
         //Arrange
         //Act
         //Assert
 
         private Mock<IArticleService> _mockService;
+        private Mock<IWebscrapeService> _mockWebscrapeService;
 
         private GetAllArticlesQueryHandler InstantiateQueryHandlerWithInterface()
         {
             _mockService = new Mock<IArticleService>();
-            var sut = new GetAllArticlesQueryHandler(_mockService.Object);
+            _mockWebscrapeService = new Mock<IWebscrapeService>();
+            var sut = new GetAllArticlesQueryHandler(_mockService.Object, _mockWebscrapeService.Object);
             return sut;
         }
 
@@ -44,13 +48,14 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
             };
 
             IArticleService serv = new ArticleService();
-            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv);
+            IWebscrapeService scrapeServe = new WebscrapeService();
+            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv, scrapeServe);
 
             // Act
             var result = await sut.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.IsInstanceOf<string>(result);
+            Assert.IsInstanceOf<GetArticleResult>(result);
         }
 
         [Test]
@@ -70,14 +75,15 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
             };
 
             IArticleService serv = new ArticleService();
-            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv);
+            IWebscrapeService scrapeServe = new WebscrapeService();
+            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv, scrapeServe);
 
             // Act
             var expected = Convert.ToInt32(characterCount);
             var result = await sut.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.AreEqual(expected, result.Length);
+            Assert.AreEqual(expected, result.Content.Length);
         }
 
         [Test]
@@ -88,10 +94,10 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
             GetAllArticlesQueryHandler sut = InstantiateQueryHandlerWithInterface();
 
             var result = sut.Handle(query, CancellationToken.None);
-            Rootobject expected = new Rootobject();
 
             _mockService.Verify(m => m.GetArticlesAsync(It.IsAny<GetAllArticlesQuery>()), Times.Once);
         }
+
 
         // Next test will check that the AuthorService has called and brought back the author
     }

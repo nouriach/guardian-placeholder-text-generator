@@ -11,7 +11,6 @@ namespace Guardian.Text.Generator.Web.Application.Services
 {
     public class ArticleService : IArticleService
     {
-
         public async Task<Rootobject> GetArticlesAsync(GetAllArticlesQuery query)
         {
             var result = await ApiService.SendRequestAndGetArticles();
