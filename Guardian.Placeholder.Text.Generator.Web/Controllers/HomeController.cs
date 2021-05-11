@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using Guardian.Placeholder.Text.Generator.Web.Models;
+using Guardian.Text.Generator.Web.Application.Results;
 using Guardian.Text.Generator.Web.Models;
 using Guardian.Text.Generator.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -67,9 +68,9 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
 
             // Build the content to match the length of the character request
             BuildPlaceHolderText(content);
-
+            GetArticleResult res = new GetArticleResult(_copy, _characterCountRequest);
             // Make a new View Model
-            ContentResultViewModel crvm = new ContentResultViewModel(_placeholderText);
+            ContentResultViewModel crvm = new ContentResultViewModel(res);
             AuthorViewModel avm = new AuthorViewModel("Nathan");
             HomepageViewModel hvm = new HomepageViewModel(null, null, null);
 

@@ -1,6 +1,7 @@
 ﻿using AngleSharp;
 using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Application.Results;
 using Guardian.Text.Generator.Web.Extensions;
 using Guardian.Text.Generator.Web.Models;
 using MediatR;
@@ -16,90 +17,34 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Application.Handlers
 {
-    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, string>
+    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, GetArticleResult>
     {
         private readonly IArticleService _service;
-        private static Random _rand = new Random();
+        private readonly IWebscrapeService _webscrapeService;
 
-        private static readonly string _htmlRegex = "[<][^<>]*[>]";
-
-        public GetAllArticlesQueryHandler(IArticleService service)
+        public GetAllArticlesQueryHandler(IArticleService service, IWebscrapeService webscrapeService)
         {
             _service = service;
+            _webscrapeService = webscrapeService;
         }
 
-        // This should return a ViewModel
-        public async Task<string> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<GetArticleResult> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
-            int characterCount = Convert.ToInt32(request.CharacterCount);
-
             var articles = await _service.GetArticlesAsync(request);
-
-            var article = articles.response.results[_rand.Next(0, articles.response.results.Length)];
-
-            // Use the result of the API call to web scrape content
-            // articlePageContent = await _webscrapeService.GetContent();
-            var content = await GetPageData(article.webUrl);
-
-            // Build the content to match the length of the character request
-            // Result r = new Result(content, characterCount);
-                // constructor will deal with it
-            // return r;
-            string _placeholderText = BuildPlaceHolderText(content, characterCount);
-
-            // Make a new View Model to return?
-            return _placeholderText;
+            var article = GetSingleRandomArticle(articles);
+            var content = await _webscrapeService.GetPageContentAsync(article.webUrl);
+            int characterCount = Convert.ToInt32(request.CharacterCount);
+            GetArticleResult result = new GetArticleResult(content, characterCount);
+            return result;
         }
 
-        // WEBSCRAPING AN ARTICLE
-        public static async Task<List<string>> GetPageData(string url)
+        private static Article GetSingleRandomArticle(Rootobject articles)
         {
-            List<string> copy = new List<string>();
-
-            // Load default configuration
-            var config = Configuration.Default.WithDefaultLoader();
-            // Create a new browsing context
-            var context = BrowsingContext.New(config);
-            // This is where the HTTP request happens, returns <IDocument> that // we can query later
-            var document = await context.OpenAsync(url);
-
-            var articleCopyRows = document.QuerySelectorAll("p");
-
-            foreach (var c in articleCopyRows)
-            {
-                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
-                {
-                    var result = c.InnerHtml.CheckIfCopyContainsHtml() ? c.InnerHtml.RemoveHtmlFromString() : c.InnerHtml;
-                    copy.Add(result);
-                }
-            }
-
-            return copy;
-        }
-
-        public string BuildPlaceHolderText(List<string> result, int maxCount)
-        {
-            StringBuilder buildCopy = new StringBuilder();
-            int count = 0;
-
-            foreach (var sentence in result)
-            {
-                var characters = sentence.ToCharArray();
-                foreach (var ch in characters)
-                {
-                    if (buildCopy.ToString().Length < maxCount)
-                    {
-                        count++;
-                        buildCopy.Append(ch);
-                        if (ch.ToString() == "." || ch.ToString() == "!" || ch.ToString() == "?")
-                        {
-                            buildCopy.Append(" ");
-                        }
-                    }
-                }
-            }
-
-            return buildCopy.ToString();
+            Random _rand = new Random();
+            var allArticles = articles.response.results;
+            var articlesCount= articles.response.results.Length;
+            var randomArticleIndex = _rand.Next(0, articlesCount);
+            return allArticles[randomArticleIndex];
         }
     }
 }
