@@ -32,19 +32,20 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
-        [TestCase("350")]
-        [TestCase("250")]
-        [TestCase("100")]
-        [TestCase("300")]
-        [TestCase("150")]
-        [TestCase("200")]
-        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsString(string characterCount)
+        [TestCase("350", true)]
+        [TestCase("250", true)]
+        [TestCase("100", false)]
+        [TestCase("300", true)]
+        [TestCase("150", true)]
+        [TestCase("200", false)]
+        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsContentResult(string requestCount, bool isWordRequest)
         {
             // Arrange
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
-                CharacterCount = characterCount
+                RequestCount = requestCount,
+                IsWordRequest = isWordRequest
             };
 
             IArticleService serv = new ArticleService();
@@ -55,23 +56,24 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
             var result = await sut.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.IsInstanceOf<GetArticleResult>(result);
+            Assert.IsInstanceOf<GetContentResult>(result);
         }
 
         [Test]
-        [TestCase("350")]
-        [TestCase("250")]
-        [TestCase("100")]
-        [TestCase("300")]
-        [TestCase("150")]
-        [TestCase("200")]
-        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount)
+        [TestCase("350", false)]
+        [TestCase("250", false)]
+        [TestCase("100", false)]
+        [TestCase("300", false)]
+        [TestCase("150", false)]
+        [TestCase("200", false)]
+        public async Task QueryHandler_ReceivesCharacterRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isNotWordRequest)
         {
             // Arrange
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
-                CharacterCount = characterCount
+                RequestCount = characterCount,
+                IsWordRequest = isNotWordRequest
             };
 
             IArticleService serv = new ArticleService();
@@ -87,6 +89,36 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
+        [TestCase("350", true)]
+        [TestCase("250", true)]
+        [TestCase("100", true)]
+        [TestCase("300", true)]
+        [TestCase("150", true)]
+        [TestCase("200", true)]
+        public async Task QueryHandler_ReceivesWordRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isWordRequest)
+        {
+            // Arrange
+
+            GetAllArticlesQuery query = new GetAllArticlesQuery()
+            {
+                RequestCount = characterCount,
+                IsWordRequest = isWordRequest
+            };
+
+            IArticleService serv = new ArticleService();
+            IWebscrapeService scrapeServe = new WebscrapeService();
+            GetAllArticlesQueryHandler sut = new GetAllArticlesQueryHandler(serv, scrapeServe);
+
+            // Act
+            var expected = Convert.ToInt32(characterCount);
+            var result = await sut.Handle(query, CancellationToken.None);
+            var actual = result.Content.Split(" ");
+            
+            // Assert
+            Assert.AreEqual(expected, actual.Length);
+        }
+
+        [Test]
         public void QueryHandler_TakesArticleServiceInConstructor_CallsArticleServiceMethod()
         {
             GetAllArticlesQuery query = new GetAllArticlesQuery();
@@ -97,8 +129,5 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
 
             _mockService.Verify(m => m.GetArticlesAsync(It.IsAny<GetAllArticlesQuery>()), Times.Once);
         }
-
-
-        // Next test will check that the AuthorService has called and brought back the author
     }
 }

@@ -25,10 +25,10 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
             // Act
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
-                CharacterCount = req
+                RequestCount = req
             };
             // Assert
-            Assert.AreEqual(req, query.CharacterCount);
+            Assert.AreEqual(req, query.RequestCount);
         }
     }
 }

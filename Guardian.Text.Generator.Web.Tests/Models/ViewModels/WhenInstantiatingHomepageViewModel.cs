@@ -57,7 +57,7 @@ namespace Guardian.Text.Generator.Web.Tests.Models
             AuthorViewModel author = new AuthorViewModel(name);
             ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count };
             
-            // GetArticleResult articleResult = new GetArticleResult(null, Convert.ToInt32(count));
+            // GetCharacterRequestResult articleResult = new GetCharacterRequestResult(null, Convert.ToInt32(count));
             ContentResultViewModel res = new ContentResultViewModel();
             // Act
             HomepageViewModel vm = new HomepageViewModel(author, req, res);
