@@ -9,7 +9,9 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
     {
         public HomepageViewModel(){}
         public string Prompt { get; set; }
-        public string Request { get; set; }
+        public string CharacterRequest { get; set; }
+        public string WordRequest { get; set; }
+
         public HomepageViewModel(AuthorViewModel author, ContentRequestViewModel request, ContentResultViewModel result)
         {
             Author = author;
