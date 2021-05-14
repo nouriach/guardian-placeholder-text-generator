@@ -9,7 +9,7 @@ namespace Guardian.Text.Generator.Web.Application.Interfaces
 {
     public interface IAuthorService
     {
-        Task<Author> GetAuthorAsync(GetAuthorQuery query);
+        Task<Rootobject> GetAuthorAsync(GetAuthorQuery query);
 
     }
 }
