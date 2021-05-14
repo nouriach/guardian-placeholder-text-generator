@@ -1,4 +1,5 @@
 ﻿using Guardian.Text.Generator.Web.Application.Results;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

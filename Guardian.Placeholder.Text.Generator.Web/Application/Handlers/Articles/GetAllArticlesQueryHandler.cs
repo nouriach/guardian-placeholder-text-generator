@@ -1,21 +1,14 @@
 ﻿using AngleSharp;
 using Guardian.Text.Generator.Web.Application.Interfaces;
-using Guardian.Text.Generator.Web.Application.Queries;
-using Guardian.Text.Generator.Web.Application.Results;
-using Guardian.Text.Generator.Web.Extensions;
+using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 using Guardian.Text.Generator.Web.Models;
 using MediatR;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Guardian.Text.Generator.Web.Application.Handlers
+namespace Guardian.Text.Generator.Web.Application.Handlers.Articles
 {
     public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, GetContentResult>
     {

@@ -1,4 +1,4 @@
-﻿using Guardian.Text.Generator.Web.Application.Queries;
+﻿using Guardian.Text.Generator.Web.Application.Queries.Articles;
 using Guardian.Text.Generator.Web.Models.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +19,8 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            // 1. New mediatr request for author
+            // 2. instantiate new AuthorViewModel and pass mediatr result into it
             HomepageViewModel vm = new HomepageViewModel()
             {
                 Prompt = "Choose character count",

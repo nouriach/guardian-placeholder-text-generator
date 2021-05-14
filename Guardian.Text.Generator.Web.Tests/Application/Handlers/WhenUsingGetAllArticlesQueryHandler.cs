@@ -11,6 +11,9 @@ using NUnit.Framework;
 using Guardian.Text.Generator.Web.Application.Services;
 using System.Collections.Generic;
 using Guardian.Text.Generator.Web.Application.Results;
+using Guardian.Text.Generator.Web.Application.Handlers.Articles;
+using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 
 namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
 {

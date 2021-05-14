@@ -1,5 +1,6 @@
 ﻿using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Application.Queries.Articles;
 using Guardian.Text.Generator.Web.Infrastructure.Api;
 using Guardian.Text.Generator.Web.Models;
 using Moq;

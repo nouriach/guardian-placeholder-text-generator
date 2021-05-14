@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Guardian.Text.Generator.Web.Application.Results
+namespace Guardian.Text.Generator.Web.Application.Results.Articles
 {
     public class GetWordRequestResult : BaseResult
     {
