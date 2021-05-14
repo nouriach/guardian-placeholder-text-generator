@@ -12,7 +12,7 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
         {
 
         }
-        public ContentResultViewModel(GetArticleResult result)
+        public ContentResultViewModel(GetContentResult result)
         {
             Content = result.Content;
         }

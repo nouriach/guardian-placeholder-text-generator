@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Application.Queries
 {
-    public class GetAllArticlesQuery : IRequest<GetArticleResult>
+    public class GetAllArticlesQuery : IRequest<GetContentResult>
     {
-        public string CharacterCount { get; set; }
+        public string RequestCount { get; set; }
+        public bool IsWordRequest { get; set; }
     }
 }

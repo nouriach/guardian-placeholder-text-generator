@@ -17,10 +17,11 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Application.Handlers
 {
-    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, GetArticleResult>
+    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, GetContentResult>
     {
         private readonly IArticleService _service;
         private readonly IWebscrapeService _webscrapeService;
+        private static GetContentResult _result;
 
         public GetAllArticlesQueryHandler(IArticleService service, IWebscrapeService webscrapeService)
         {
@@ -28,14 +29,26 @@ namespace Guardian.Text.Generator.Web.Application.Handlers
             _webscrapeService = webscrapeService;
         }
 
-        public async Task<GetArticleResult> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<GetContentResult> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
             var articles = await _service.GetArticlesAsync(request);
             var article = GetSingleRandomArticle(articles);
             var content = await _webscrapeService.GetPageContentAsync(article.webUrl);
-            int characterCount = Convert.ToInt32(request.CharacterCount);
-            GetArticleResult result = new GetArticleResult(content, characterCount);
-            return result;
+
+            int count = Convert.ToInt32(request.RequestCount);
+
+            if (request.IsWordRequest)
+            {
+                GetWordRequestResult result = new GetWordRequestResult(content, count);
+                _result = new GetContentResult(result);
+            }
+            if (!request.IsWordRequest)
+            {
+                GetCharacterRequestResult result = new GetCharacterRequestResult(content, count);
+                _result = new GetContentResult(result);
+            }
+
+            return _result;
         }
 
         private static Article GetSingleRandomArticle(Rootobject articles)

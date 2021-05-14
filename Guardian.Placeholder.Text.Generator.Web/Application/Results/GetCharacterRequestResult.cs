@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Application.Results
 {
-    public class GetArticleResult
+    public class GetCharacterRequestResult : BaseResult
     {
-        public GetArticleResult(List<string> contentCollection, int characterCount)
+        public GetCharacterRequestResult(List<string> contentCollection, int characterCount)
         {
-            Content = BuildContent(contentCollection, characterCount);
+            Content = BuildContentBasedOnCharacterCount(contentCollection, characterCount);
         }
 
-        public string Content { get; }
-        private string BuildContent(List<string> contentCollection, int characterCount)
+        private string BuildContentBasedOnCharacterCount(List<string> contentCollection, int characterCount)
         {
             StringBuilder buildCopy = new StringBuilder();
 
