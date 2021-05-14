@@ -1,22 +1,22 @@
-﻿@*@model Guardian.Text.Generator.Web.Application.Queries.GetAllArticlesQuery;*@
-@model Guardian.Text.Generator.Web.Models.ViewModels.HomepageViewModel;
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+﻿@model Guardian.Text.Generator.Web.Models.ViewModels.HomepageViewModel;
 
 <div class="container">
-    <h4 class="display-4">Choose character count</h4>
-    <form method="post" asp-controller="Placeholder" asp-action="Index" >
+    <h4 class="display-4">@Model.Prompt</h4>
+    <form method="post" asp-controller="Home" asp-action="Index">
         <div class="form-group">
-            <label asp-for="Request"></label>
-            <input asp-for="Request" />
+            <label asp-for="@Model.CharacterRequest"></label>
+            <input asp-for="@Model.CharacterRequest" />
         </div>
         <div class="form-group">
-            <input type="submit" value="Choose Count" class="btn btn-primary"/>
+            <label asp-for="@Model.WordRequest"></label>
+            <input asp-for="@Model.WordRequest" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Choose Count" class="btn btn-primary" />
         </div>
     </form>
 </div>
 
-
+<div>
+    <partial name="_PlaceholderResult" model="Model.ContentResult" />
+</div>
