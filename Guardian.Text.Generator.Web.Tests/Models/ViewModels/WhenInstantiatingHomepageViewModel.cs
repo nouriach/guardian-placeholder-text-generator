@@ -1,4 +1,6 @@
 ﻿using Guardian.Text.Generator.Web.Application.Results;
+using Guardian.Text.Generator.Web.Application.Results.Authors;
+using Guardian.Text.Generator.Web.Models;
 using Guardian.Text.Generator.Web.Models.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -10,24 +12,53 @@ namespace Guardian.Text.Generator.Web.Tests.Models
 {
     public class WhenInstantiatingHomepageViewModel
     {
+        private static void BuildAuthorViewModel(out Rootobject author, out AuthorViewModel authorVM)
+        {
+            author = new Rootobject()
+            {
+                response = new Response
+                {
+                    results = new[]
+                                {
+                        new Article
+                        {
+                            tags = new []
+                            {
+                                new Bio()
+                                {
+                                    webTitle = "Barney Ronay",
+                                    webUrl = "https://www.theguardian.com/profile/barneyronay",
+                                    bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
+                                    bylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                                    bylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                                    firstName = "Barney",
+                                    lastName = "Ronay"
+                                },
+                            }
+                        }
+                    }
+                }
+            };
+            GetAuthorResult result = new GetAuthorResult(author);
+            authorVM = new AuthorViewModel(result);
+        }
         // Arrange
         // Act
         // Assert
 
         [Test]
-        [TestCase("Nathan")]
-        [TestCase("Courtney")]
-        [TestCase("Barney")]
-
-        public static void Then_Constructor_WithAuthor_SetsAuthor(string name)
+        public static void Then_Constructor_WithAuthor_SetsAuthor()
         {
             // Arrange
-            AuthorViewModel author = new AuthorViewModel(name);
+            Rootobject author;
+            AuthorViewModel authorVM;
+            BuildAuthorViewModel(out author, out authorVM);
             // Act
-            HomepageViewModel vm = new HomepageViewModel(author, null, null);
+            HomepageViewModel vm = new HomepageViewModel(authorVM, null, null);
             // Assert
-            Assert.AreEqual(name, vm.Author.FirstName);
+            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
         }
+
 
         [Test]
         [TestCase("Nathan", "10")]
@@ -37,12 +68,15 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         public static void Then_Constructor_WithAuthorAndContentRequest_SetsAuthorAndRequest(string name, string count)
         {
             // Arrange
-            AuthorViewModel author = new AuthorViewModel(name);
+            Rootobject author;
+            AuthorViewModel authorVM;
+            BuildAuthorViewModel(out author, out authorVM);
+
             ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count} ;
             // Act
-            HomepageViewModel vm = new HomepageViewModel(author, req, null);
+            HomepageViewModel vm = new HomepageViewModel(authorVM, req, null);
             // Assert
-            Assert.AreEqual(name, vm.Author.FirstName);
+            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
             Assert.AreEqual(count, vm.ContentRequest.CharacterCount);
         }
 
@@ -54,17 +88,18 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         public static void Then_Constructor_WithAuthorAndContentRequestAndContentResult_SetsAuthorAndRequestAndResult(string name, string count, string result)
         {
             // Arrange
-            AuthorViewModel author = new AuthorViewModel(name);
+            Rootobject author;
+            AuthorViewModel authorVM;
+            BuildAuthorViewModel(out author, out authorVM);
             ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count };
             
             // GetCharacterRequestResult articleResult = new GetCharacterRequestResult(null, Convert.ToInt32(count));
             ContentResultViewModel res = new ContentResultViewModel();
             // Act
-            HomepageViewModel vm = new HomepageViewModel(author, req, res);
+            HomepageViewModel vm = new HomepageViewModel(authorVM, req, res);
             // Assert
-            Assert.AreEqual(name, vm.Author.FirstName);
+            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
             Assert.AreEqual(count, vm.ContentRequest.CharacterCount);
-            // Assert.AreEqual(result, vm.ContentResult.Content);
         }
     }
 }
