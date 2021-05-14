@@ -1,4 +1,5 @@
 ﻿using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Application.Queries.Authors;
 using Guardian.Text.Generator.Web.Models.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,22 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // 1. New mediatr request for author
-            // 2. instantiate new AuthorViewModel and pass mediatr result into it
+
+            GetAuthorQuery query = new GetAuthorQuery()
+            {
+                Name = "Barney Ronay"
+            };
+
+            var result = await _mediator.Send(query, CancellationToken.None);
+
+            AuthorViewModel author = new AuthorViewModel(result);
+
             HomepageViewModel vm = new HomepageViewModel()
             {
                 Prompt = "Choose character count",
-                Author = new AuthorViewModel(),
+                Author = author,
                 ContentRequest = new ContentRequestViewModel(),
                 ContentResult = new ContentResultViewModel()
             };
@@ -43,9 +52,18 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
 
             var result = await _mediator.Send(query, CancellationToken.None);
 
+            GetAuthorQuery authorQuery = new GetAuthorQuery()
+            {
+                Name = "Barney Ronay"
+            };
+
+            var authorResult = await _mediator.Send(authorQuery, CancellationToken.None);
+
+            AuthorViewModel author = new AuthorViewModel(authorResult);
+
             ContentResultViewModel cvm = new ContentResultViewModel(result);
 
-            HomepageViewModel vm = new HomepageViewModel(null, null, cvm);
+            HomepageViewModel vm = new HomepageViewModel(author, null, cvm);
 
             return View(vm);
         }

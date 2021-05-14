@@ -18,5 +18,14 @@
 </div>
 
 <div>
+    <p>@Model.Author.FirstName</p>
+    <p>@Model.Author.LastName</p>
+    <p>
+        <a href="@Model.Author.Url" target="_blank">@Model.Author.Bio</a>
+    </p>
+    <img src="@Model.Author.AuthorImageSmall"/>
+</div>
+
+<div>
     <partial name="_PlaceholderResult" model="Model.ContentResult" />
 </div>
