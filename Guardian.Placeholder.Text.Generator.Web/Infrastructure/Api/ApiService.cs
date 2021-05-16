@@ -25,7 +25,7 @@ namespace Guardian.Text.Generator.Web.Infrastructure.Api
         private static string _urlBase = "https://content.guardianapis.com/search?";
         private static int _page;
         private static string _pageRequest = $"page=";
-        private static string _query = "q=barney-ronay";
+        public static string _query = "";
         private static string _queryDate = "from-date=2018-01-01";
         private static string _apiKey = "api-key=0ff89a23-392e-4b15-ad61-da8b70a6abd1";
 
@@ -45,12 +45,19 @@ namespace Guardian.Text.Generator.Web.Infrastructure.Api
 
         public static async Task<Rootobject> SendRequestAndGetAuthorBio(string author)
         {
+            SetAuthorQueryValue(author);
             var jsonString = await SendGuardianRequest(BuildAuthorApiCall());
             MapJsonToAuthorModel(jsonString);
             return _author;
         }
 
-        private static string BuildAuthorApiCall()
+        private static void SetAuthorQueryValue(string author)
+        {
+            var authorQuery = author.Replace(" ", "-").ToLower();
+            _query = $"q={authorQuery}";
+        }
+
+    private static string BuildAuthorApiCall()
         {
             return $"{_urlBase}{_showTags}&{_section}&{_query}&{_apiKey}";
         }
