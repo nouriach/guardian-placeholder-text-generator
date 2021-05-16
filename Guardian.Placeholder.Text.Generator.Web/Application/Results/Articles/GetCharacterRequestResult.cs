@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Guardian.Text.Generator.Web.Application.Results
+namespace Guardian.Text.Generator.Web.Application.Results.Articles
 {
     public class GetCharacterRequestResult : BaseResult
     {

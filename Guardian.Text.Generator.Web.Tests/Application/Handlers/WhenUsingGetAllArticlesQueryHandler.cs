@@ -1,16 +1,14 @@
 ﻿using Guardian.Text.Generator.Web.Application.Handlers;
 using Guardian.Text.Generator.Web.Application.Interfaces;
-using Guardian.Text.Generator.Web.Application.Queries;
-using Guardian.Text.Generator.Web.Models;
 using Moq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 using NUnit.Framework;
 using Guardian.Text.Generator.Web.Application.Services;
-using System.Collections.Generic;
-using Guardian.Text.Generator.Web.Application.Results;
+using Guardian.Text.Generator.Web.Application.Handlers.Articles;
+using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 
 namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
 {

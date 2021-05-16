@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Models
 {
-
     public class Rootobject
     {
         public Response response { get; set; }
@@ -34,12 +33,12 @@ namespace Guardian.Text.Generator.Web.Models
         public string webTitle { get; set; }
         public string webUrl { get; set; }
         public string apiUrl { get; set; }
-        public Tag[] tags { get; set; }
+        public Bio[] tags { get; set; }
         public bool isHosted { get; set; }
         public string pillarId { get; set; }
         public string pillarName { get; set; }
     }
-    public class Tag
+    public class Bio
     {
         public string id { get; set; }
         public string type { get; set; }
@@ -48,5 +47,10 @@ namespace Guardian.Text.Generator.Web.Models
         public string apiUrl { get; set; }
         public object[] references { get; set; }
         public string bio { get; set; }
+        public string bylineImageUrl { get; set; }
+        public string bylineLargeImageUrl { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string twitterHandle { get; set; }
     }
 }

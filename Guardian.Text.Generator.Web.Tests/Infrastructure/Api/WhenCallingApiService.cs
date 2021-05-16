@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
 {
@@ -32,6 +33,16 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
             var result = ApiService.SendRequestAndGetArticles();
             //Assert
             Assert.IsInstanceOf<Rootobject>(result.Result);
+        }
+
+        [Test]
+        public async Task And_Author_Request_Returns_Author()
+        {
+            //Arrange
+            //Act
+            var result = await ApiService.SendRequestAndGetAuthorBio("Test Name");
+            //Assert
+            Assert.IsNotNull(result);
         }
     }
 }

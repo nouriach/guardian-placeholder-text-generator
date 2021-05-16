@@ -1,17 +1,14 @@
 using Guardian.Text.Generator.Web.Application.Interfaces;
-using Guardian.Text.Generator.Web.Application.Queries;
+using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Application.Queries.Authors;
 using Guardian.Text.Generator.Web.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Guardian.Placeholder.Text.Generator.Web
 {
@@ -29,8 +26,12 @@ namespace Guardian.Placeholder.Text.Generator.Web
         {
             services.AddControllersWithViews();
             services.AddMediatR(typeof(GetAllArticlesQuery).Assembly);
+            services.AddMediatR(typeof(GetAuthorQuery).Assembly);
+
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IWebscrapeService, WebscrapeService>();
+            services.AddScoped<IAuthorService, AuthorService>();
+
 
         }
 

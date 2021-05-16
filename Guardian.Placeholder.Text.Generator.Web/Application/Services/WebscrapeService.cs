@@ -18,7 +18,7 @@ namespace Guardian.Text.Generator.Web.Application.Services
             var config = Configuration.Default.WithDefaultLoader();
             // Create a new browsing context
             var context = BrowsingContext.New(config);
-            // This is where the HTTP request happens, returns <IDocument> that // we can query later
+            // This is where the HTTP request happens, returns <IDocument> that we can query later
             var document = await context.OpenAsync(articleLink);
 
             var articleCopyRows = document.QuerySelectorAll("p");

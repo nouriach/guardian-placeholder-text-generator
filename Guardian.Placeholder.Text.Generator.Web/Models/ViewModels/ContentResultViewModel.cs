@@ -1,8 +1,5 @@
 ﻿using Guardian.Text.Generator.Web.Application.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 
 namespace Guardian.Text.Generator.Web.Models.ViewModels
 {
