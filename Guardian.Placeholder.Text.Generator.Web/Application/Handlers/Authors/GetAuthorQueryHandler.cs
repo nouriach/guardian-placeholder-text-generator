@@ -17,9 +17,13 @@ namespace Guardian.Text.Generator.Web.Application.Handlers.Authors
         }
         public async Task<GetAuthorResult> Handle(GetAuthorQuery request, CancellationToken cancellationToken)
         {
-            var author = await _service.GetAuthorAsync(request);
-            GetAuthorResult result = new GetAuthorResult(author);
-            return result;
+            var result = await _service.GetAuthorAsync(request);
+            if(result != null)
+            {
+                GetAuthorResult authorResult = new GetAuthorResult(result);
+                return authorResult;
+            }
+            return null;
         }
     }
 }

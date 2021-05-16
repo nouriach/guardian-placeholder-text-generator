@@ -18,22 +18,12 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-
-            GetAuthorQuery query = new GetAuthorQuery()
-            {
-                Name = "Barney Ronay"
-            };
-
-            var result = await _mediator.Send(query, CancellationToken.None);
-
-            AuthorViewModel author = new AuthorViewModel(result);
 
             HomepageViewModel vm = new HomepageViewModel()
             {
-                Prompt = "Choose character count",
-                Author = author,
+                Author = new AuthorViewModel(),
                 ContentRequest = new ContentRequestViewModel(),
                 ContentResult = new ContentResultViewModel()
             };
@@ -42,7 +32,7 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string wordRequest, string characterRequest)
+        public async Task<IActionResult> Index(string wordRequest, string characterRequest, string authorRequest)
         {
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
@@ -54,16 +44,16 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
 
             GetAuthorQuery authorQuery = new GetAuthorQuery()
             {
-                Name = "Barney Ronay"
+                Name = authorRequest
             };
 
             var authorResult = await _mediator.Send(authorQuery, CancellationToken.None);
 
             AuthorViewModel author = new AuthorViewModel(authorResult);
+            ContentRequestViewModel contentReq = new ContentRequestViewModel();
+            ContentResultViewModel contentResult = new ContentResultViewModel(result);
 
-            ContentResultViewModel cvm = new ContentResultViewModel(result);
-
-            HomepageViewModel vm = new HomepageViewModel(author, null, cvm);
+            HomepageViewModel vm = new HomepageViewModel(author, contentReq, contentResult);
 
             return View(vm);
         }

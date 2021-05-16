@@ -9,15 +9,15 @@ namespace Guardian.Text.Generator.Web.Application.Results.Authors
 {
     public class GetAuthorResult
     {
-        public GetAuthorResult(Rootobject author)
+        public GetAuthorResult(Article author)
         {
-            AuthorName = author.response.results[0].tags[0].webTitle;
-            Url = author.response.results[0].tags[0].webUrl;
-            Bio = RemoveHtml(author.response.results[0].tags[0].bio);
-            AuthorImageSmall = author.response.results[0].tags[0].bylineImageUrl;
-            AuthorImageLarge = author.response.results[0].tags[0].bylineLargeImageUrl;
-            FirstName = author.response.results[0].tags[0].firstName;
-            LastName = author.response.results[0].tags[0].lastName;
+            AuthorName = author.tags[0].webTitle;
+            Url = author.tags[0].webUrl;
+            Bio = RemoveHtml(author.tags[0].bio);
+            AuthorImageSmall = author.tags[0].bylineImageUrl;
+            AuthorImageLarge = author.tags[0].bylineLargeImageUrl;
+            FirstName = author.tags[0].firstName;
+            LastName = author.tags[0].lastName;
         }
 
         private string RemoveHtml(string bio)
