@@ -11,7 +11,6 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
         {
             ContentRequest = new ContentRequestViewModel();
         }
-        public string Prompt { get; set; }
 
         public HomepageViewModel(AuthorViewModel author, ContentRequestViewModel request, ContentResultViewModel result)
         {
