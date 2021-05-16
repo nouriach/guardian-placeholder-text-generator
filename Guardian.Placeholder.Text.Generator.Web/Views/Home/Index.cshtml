@@ -1,8 +1,17 @@
 ﻿@model Guardian.Text.Generator.Web.Models.ViewModels.HomepageViewModel;
 
 <div class="container">
-    <h4 class="display-4">@Model.Prompt</h4>
+    <h4 class="display-4">@Model.ContentRequest.Prompt</h4>
     <form method="post" asp-controller="Home" asp-action="Index">
+        <select name="authorRequest" >
+            <option value="Nick Ames">Nick Ames</option>
+            <option value="Scott Murray">Scott Murray</option>
+            <option value="Jacob Steinberg">Jacob Steinberg</option>
+            <option value="David Hytner">David Hytner</option>
+            <option value="John Ashdown">John Ashdown</option>
+            <option value="Jonathan Wilson">Jonathan Wilson</option>
+            <option value="Barney Ronay">Barney Ronay</option>
+        </select>
         <div class="form-group">
             <label asp-for="@Model.ContentRequest.CharacterCount"></label>
             <input name="characterRequest" />
@@ -18,14 +27,9 @@
 </div>
 
 <div>
-    <p>@Model.Author.FirstName</p>
-    <p>@Model.Author.LastName</p>
-    <p>
-        <a href="@Model.Author.Url" target="_blank">@Model.Author.Bio</a>
-    </p>
-    <img src="@Model.Author.AuthorImageSmall"/>
+    <partial name="_AuthorResultPartial" model="Model.Author" />
 </div>
 
 <div>
-    <partial name="_PlaceholderResult" model="Model.ContentResult" />
+    <partial name="_PlaceholderResultPartial" model="Model.ContentResult" />
 </div>
