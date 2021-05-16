@@ -1,0 +1,11 @@
+﻿
+@model Guardian.Text.Generator.Web.Models.ViewModels.AuthorViewModel;
+
+<div>
+    <p>@Model.FirstName</p>
+    <p>@Model.LastName</p>
+    <p>
+        <a href="@Model.Url" target="_blank">@Model.Bio</a>
+    </p>
+    <img src="@Model.AuthorImageSmall" />
+</div>
