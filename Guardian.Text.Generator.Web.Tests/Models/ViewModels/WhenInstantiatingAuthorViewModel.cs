@@ -14,15 +14,9 @@ namespace Guardian.Text.Generator.Web.Tests.Models.ViewModels
         public void GivenConstructor_FillProperties_WithAuthorResult()
         {
             // Arrange
-            Rootobject author = new Rootobject()
-            {
-                response = new Response
-                {
-                    results = new[]
-                    {
-                        new Article
+            var author = new Article
                         {
-                            tags = new []
+                            tags = new[]
                             {
                                 new Bio()
                                 {
@@ -35,16 +29,13 @@ namespace Guardian.Text.Generator.Web.Tests.Models.ViewModels
                                     lastName = "Ronay"
                                 },
                             }
-                        }
-                    }
-                }
-            };
+                        };
 
             GetAuthorResult result = new GetAuthorResult(author);
 
             //Act
             AuthorViewModel vm = new AuthorViewModel(result);
-            var expected = author.response.results[0].tags[0];
+            var expected = author.tags[0];
 
             //Assert
             Assert.AreEqual(result.FirstName, vm.FirstName);

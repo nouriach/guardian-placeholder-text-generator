@@ -23,12 +23,19 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         private IAuthorService _mockService;
 
         [Test]
-        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService()
+        [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
+        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService(string author)
         {
             //Arrange
             GetAuthorQuery query = new GetAuthorQuery()
             {
-                Name = "Barney Ronay"
+                Name = author
             };
 
             _mockService = new AuthorService();
@@ -42,12 +49,19 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
-        public async Task QueryHandler_ReceivesQuery_ResultIsReturned_WithCorrectAuthor()
+        [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
+        public async Task QueryHandler_ReceivesQuery_ResultIsReturned_WithCorrectAuthor(string author)
         {
             //Arrange
             GetAuthorQuery query = new GetAuthorQuery()
             {
-                Name = "Barney Ronay"
+                Name = author
             };
 
             _mockService = new AuthorService();

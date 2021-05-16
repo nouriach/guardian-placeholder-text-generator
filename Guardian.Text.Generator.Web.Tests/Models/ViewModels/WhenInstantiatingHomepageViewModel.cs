@@ -12,35 +12,27 @@ namespace Guardian.Text.Generator.Web.Tests.Models
 {
     public class WhenInstantiatingHomepageViewModel
     {
-        private static void BuildAuthorViewModel(out Rootobject author, out AuthorViewModel authorVM)
+        private static AuthorViewModel BuildAuthorViewModel()
         {
-            author = new Rootobject()
+            var author = new Article()
             {
-                response = new Response
-                {
-                    results = new[]
-                                {
-                        new Article
+                tags = new[]
+                    {
+                        new Bio()
                         {
-                            tags = new []
-                            {
-                                new Bio()
-                                {
-                                    webTitle = "Barney Ronay",
-                                    webUrl = "https://www.theguardian.com/profile/barneyronay",
-                                    bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
-                                    bylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
-                                    bylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
-                                    firstName = "Barney",
-                                    lastName = "Ronay"
-                                },
-                            }
-                        }
+                            webTitle = "Barney Ronay",
+                            webUrl = "https://www.theguardian.com/profile/barneyronay",
+                            bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
+                            bylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                            bylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                            firstName = "Barney",
+                            lastName = "Ronay"
+                        },
                     }
-                }
             };
+
             GetAuthorResult result = new GetAuthorResult(author);
-            authorVM = new AuthorViewModel(result);
+            return new AuthorViewModel(result);
         }
         // Arrange
         // Act
@@ -50,13 +42,12 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         public static void Then_Constructor_WithAuthor_SetsAuthor()
         {
             // Arrange
-            Rootobject author;
-            AuthorViewModel authorVM;
-            BuildAuthorViewModel(out author, out authorVM);
+
+            var authorVM = BuildAuthorViewModel();
             // Act
             HomepageViewModel vm = new HomepageViewModel(authorVM, null, null);
             // Assert
-            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
+            Assert.AreEqual("Barney", vm.Author.FirstName);
         }
 
 
@@ -68,15 +59,14 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         public static void Then_Constructor_WithAuthorAndContentRequest_SetsAuthorAndRequest(string name, string count)
         {
             // Arrange
-            Rootobject author;
-            AuthorViewModel authorVM;
-            BuildAuthorViewModel(out author, out authorVM);
+            var authorVM = BuildAuthorViewModel();
+
 
             ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count} ;
             // Act
             HomepageViewModel vm = new HomepageViewModel(authorVM, req, null);
             // Assert
-            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
+            Assert.AreEqual("Barney", vm.Author.FirstName);
             Assert.AreEqual(count, vm.ContentRequest.CharacterCount);
         }
 
@@ -88,9 +78,8 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         public static void Then_Constructor_WithAuthorAndContentRequestAndContentResult_SetsAuthorAndRequestAndResult(string name, string count, string result)
         {
             // Arrange
-            Rootobject author;
-            AuthorViewModel authorVM;
-            BuildAuthorViewModel(out author, out authorVM);
+            var authorVM = BuildAuthorViewModel();
+
             ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count };
             
             // GetCharacterRequestResult articleResult = new GetCharacterRequestResult(null, Convert.ToInt32(count));
@@ -98,7 +87,7 @@ namespace Guardian.Text.Generator.Web.Tests.Models
             // Act
             HomepageViewModel vm = new HomepageViewModel(authorVM, req, res);
             // Assert
-            Assert.AreEqual(author.response.results[0].tags[0].firstName, vm.Author.FirstName);
+            Assert.AreEqual("Barney", vm.Author.FirstName);
             Assert.AreEqual(count, vm.ContentRequest.CharacterCount);
         }
     }

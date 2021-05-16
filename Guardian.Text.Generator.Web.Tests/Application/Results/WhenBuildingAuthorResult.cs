@@ -10,18 +10,19 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Results
     public class WhenBuildingAuthorResult
     {
         [Test]
+        //[TestCase("Barney Ronay")]
+        //[TestCase("Nick Ames")]
+        //[TestCase("Scott Murray")]
+        //[TestCase("Jacob Steinberg")]
+        //[TestCase("David Hytner")]
+        //[TestCase("John Ashdown")]
+        //[TestCase("Jonathan Wilson", "https://www.theguardian.com/profile/jonathanwilson")]
         public static void GivenConstructor_WithAuthorObject_ReturnsResult()
         {
             // Arrange
-            Rootobject author = new Rootobject()
+            var author = new Article
             {
-                response = new Response
-                {
-                    results = new []
-                    {
-                        new Article
-                        {
-                            tags = new []
+                tags = new[]
                             {
                                 new Bio()
                                 {
@@ -34,14 +35,11 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Results
                                     lastName = "Ronay"
                                 },
                             }
-                        }
-                    }
-                }
             };
 
             // Act
             GetAuthorResult actual = new GetAuthorResult(author);
-            var expected = author.response.results[0].tags[0];
+            var expected = author.tags[0];
 
             // Assert
             Assert.AreEqual(expected.webTitle, actual.AuthorName);

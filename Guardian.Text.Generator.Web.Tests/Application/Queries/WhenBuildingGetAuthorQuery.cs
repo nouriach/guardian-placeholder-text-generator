@@ -14,6 +14,12 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Queries
 
         [Test]
         [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
         public void And_Query_Receives_Request_Then_Sets_Name(string req)
         {
             // Arrange

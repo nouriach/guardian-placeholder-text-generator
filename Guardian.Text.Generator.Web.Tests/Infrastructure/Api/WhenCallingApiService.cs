@@ -36,13 +36,37 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
         }
 
         [Test]
-        public async Task And_Author_Request_Returns_Author()
+        [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
+        public async Task And_Author_Request_Returns_Author(string author)
         {
             //Arrange
             //Act
-            var result = await ApiService.SendRequestAndGetAuthorBio("Test Name");
+            var result = await ApiService.SendRequestAndGetAuthorBio(author);
             //Assert
             Assert.IsNotNull(result);
+        }
+
+        [Test]
+        [TestCase("Barney Ronay", "q=barney-ronay")]
+        [TestCase("Nick Ames", "q=nick-ames")]
+        [TestCase("Scott Murray", "q=scott-murray")]
+        [TestCase("Jacob Steinberg", "q=jacob-steinberg")]
+        [TestCase("David Hytner", "q=david-hytner")]
+        [TestCase("John Ashdown", "q=john-ashdown")]
+        [TestCase("Jonathan Wilson", "q=jonathan-wilson")]
+        public async Task And_Author_Request_Sets_AuthorQuery(string author, string expected)
+        {
+            //Arrange
+            //Act
+            var result = await ApiService.SendRequestAndGetAuthorBio(author);
+            //Assert
+            Assert.AreEqual(expected, ApiService._query);
         }
     }
 }
