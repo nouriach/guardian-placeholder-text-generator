@@ -42,12 +42,12 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(HomepageViewModel req)
+        public async Task<IActionResult> Index(string wordRequest, string characterRequest)
         {
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
-                RequestCount = !string.IsNullOrEmpty(req.CharacterRequest) ? req.CharacterRequest : req.WordRequest,
-                IsWordRequest = !string.IsNullOrEmpty(req.CharacterRequest) ? false : true,
+                RequestCount = !string.IsNullOrEmpty(characterRequest) ? characterRequest : wordRequest,
+                IsWordRequest = !string.IsNullOrEmpty(characterRequest) ? false : true,
             };
 
             var result = await _mediator.Send(query, CancellationToken.None);

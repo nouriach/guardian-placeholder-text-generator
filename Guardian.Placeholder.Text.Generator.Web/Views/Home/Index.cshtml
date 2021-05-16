@@ -4,12 +4,12 @@
     <h4 class="display-4">@Model.Prompt</h4>
     <form method="post" asp-controller="Home" asp-action="Index">
         <div class="form-group">
-            <label asp-for="@Model.CharacterRequest"></label>
-            <input asp-for="@Model.CharacterRequest" />
+            <label asp-for="@Model.ContentRequest.CharacterCount"></label>
+            <input name="characterRequest" />
         </div>
         <div class="form-group">
-            <label asp-for="@Model.WordRequest"></label>
-            <input asp-for="@Model.WordRequest" />
+            <label asp-for="@Model.ContentRequest.WordCount"></label>
+            <input name="wordRequest" />
         </div>
         <div class="form-group">
             <input type="submit" value="Choose Count" class="btn btn-primary" />
