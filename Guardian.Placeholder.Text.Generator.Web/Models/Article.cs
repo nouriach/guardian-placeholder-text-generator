@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Guardian.Text.Generator.Web.Models
 {
-
     public class Rootobject
     {
         public Response response { get; set; }
