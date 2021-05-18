@@ -1,4 +1,5 @@
 ﻿using Guardian.Text.Generator.Web.Application.Results.Authors;
+using Guardian.Text.Generator.Web.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
             FirstName = author.FirstName;
             LastName = author.LastName;
             Url = author.Url;
-            Bio = author.Bio;
+            Bio = author.Bio.RemoveNonBreakingSpaceFromString();
             AuthorImageSmall = author.AuthorImageSmall;
             AuthorImageLarge = author.AuthorImageLarge;
         }

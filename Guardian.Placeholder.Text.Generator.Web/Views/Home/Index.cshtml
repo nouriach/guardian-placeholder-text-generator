@@ -3,14 +3,15 @@
 <div class="container">
     <h4 class="display-4">@Model.ContentRequest.Prompt</h4>
     <form method="post" asp-controller="Home" asp-action="Index">
-        <select name="authorRequest" >
-            <option value="Nick Ames">Nick Ames</option>
-            <option value="Scott Murray">Scott Murray</option>
-            <option value="Jacob Steinberg">Jacob Steinberg</option>
-            <option value="David Hytner">David Hytner</option>
-            <option value="John Ashdown">John Ashdown</option>
-            <option value="Jonathan Wilson">Jonathan Wilson</option>
-            <option value="Barney Ronay">Barney Ronay</option>
+        <select name="authorRequest">
+            if(@Model.ContentRequest.Authors.Count > 0) 
+            {
+                @foreach (var author in Model.ContentRequest.Authors)
+                {
+                    <option value="@author">@author</option>
+                }
+            
+            }
         </select>
         <div class="form-group">
             <label asp-for="@Model.ContentRequest.CharacterCount"></label>

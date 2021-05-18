@@ -9,9 +9,7 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
     {
         public HomepageViewModel()
         {
-            ContentRequest = new ContentRequestViewModel();
         }
-
         public HomepageViewModel(AuthorViewModel author, ContentRequestViewModel request, ContentResultViewModel result)
         {
             Author = author;
