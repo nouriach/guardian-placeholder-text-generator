@@ -60,9 +60,17 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         {
             // Arrange
             var authorVM = BuildAuthorViewModel();
-
-
-            ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count} ;
+            GetAuthorsResult authors = new GetAuthorsResult()
+            {
+                Authors = new List<string>()
+                {
+                    "www",
+                    "xxx",
+                    "yyy",
+                    "zzz"
+                }
+            };
+            ContentRequestViewModel req = new ContentRequestViewModel(authors) { CharacterCount = count} ;
             // Act
             HomepageViewModel vm = new HomepageViewModel(authorVM, req, null);
             // Assert
@@ -79,8 +87,17 @@ namespace Guardian.Text.Generator.Web.Tests.Models
         {
             // Arrange
             var authorVM = BuildAuthorViewModel();
-
-            ContentRequestViewModel req = new ContentRequestViewModel() { CharacterCount = count };
+            GetAuthorsResult authors = new GetAuthorsResult()
+            {
+                Authors = new List<string>()
+                {
+                    "www",
+                    "xxx",
+                    "yyy",
+                    "zzz"
+                }
+            };
+            ContentRequestViewModel req = new ContentRequestViewModel(authors) { CharacterCount = count };
             
             // GetCharacterRequestResult articleResult = new GetCharacterRequestResult(null, Convert.ToInt32(count));
             ContentResultViewModel res = new ContentResultViewModel();

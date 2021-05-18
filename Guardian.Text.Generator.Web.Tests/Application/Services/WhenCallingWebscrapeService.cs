@@ -17,7 +17,7 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Services
         // Assert
 
         [Test]
-        public static void WithArticleObject_ThenScrapePage_AndReturnsStringCollection()
+        public static void WithUrl_ThenScrapePageForArticleContent_AndReturnStringCollection()
         {
             // Arrange
             Article article = new Article()
@@ -29,6 +29,20 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Services
 
             // Act
             var result = sut.GetPageContentAsync(article.webUrl);
+
+            // Assert
+            Assert.IsInstanceOf<Task<List<string>>>(result);
+        }
+
+        [Test]
+        public static void ThenScrapePageForAuthorsContent_AndReturnStringCollection()
+        {
+            // Arrange
+
+            IWebscrapeService sut = new WebscrapeService();
+
+            // Act
+            var result = sut.GetAllAuthorsAsync();
 
             // Assert
             Assert.IsInstanceOf<Task<List<string>>>(result);
