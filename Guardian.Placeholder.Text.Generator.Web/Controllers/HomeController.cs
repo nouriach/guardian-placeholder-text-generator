@@ -18,13 +18,16 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            GetAuthorsQuery authors = new GetAuthorsQuery();
+            var result = await _mediator.Send(authors, CancellationToken.None);
+            ContentRequestViewModel contentRequestViewModel = new ContentRequestViewModel(result);
 
             HomepageViewModel vm = new HomepageViewModel()
             {
                 Author = new AuthorViewModel(),
-                ContentRequest = new ContentRequestViewModel(),
+                ContentRequest = contentRequestViewModel,
                 ContentResult = new ContentResultViewModel()
             };
 
@@ -39,21 +42,22 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
                 RequestCount = !string.IsNullOrEmpty(characterRequest) ? characterRequest : wordRequest,
                 IsWordRequest = !string.IsNullOrEmpty(characterRequest) ? false : true,
             };
-
             var result = await _mediator.Send(query, CancellationToken.None);
 
             GetAuthorQuery authorQuery = new GetAuthorQuery()
             {
                 Name = authorRequest
             };
-
             var authorResult = await _mediator.Send(authorQuery, CancellationToken.None);
 
+            GetAuthorsQuery authors = new GetAuthorsQuery();
+            var authorsResult = await _mediator.Send(authors, CancellationToken.None);
+
             AuthorViewModel author = new AuthorViewModel(authorResult);
-            ContentRequestViewModel contentReq = new ContentRequestViewModel();
+            ContentRequestViewModel contentRequestViewModel = new ContentRequestViewModel(authorsResult);
             ContentResultViewModel contentResult = new ContentResultViewModel(result);
 
-            HomepageViewModel vm = new HomepageViewModel(author, contentReq, contentResult);
+            HomepageViewModel vm = new HomepageViewModel(author, contentRequestViewModel, contentResult);
 
             return View(vm);
         }
