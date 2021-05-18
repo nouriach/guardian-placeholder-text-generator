@@ -8,5 +8,6 @@ namespace Guardian.Text.Generator.Web.Application.Interfaces
     public interface IWebscrapeService
     {
         Task<List<string>> GetPageContentAsync(string articleLink);
+        Task<List<string>> GetAllAuthorsAsync();
     }
 }
