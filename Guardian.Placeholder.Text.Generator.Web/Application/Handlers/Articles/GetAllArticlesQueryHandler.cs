@@ -24,8 +24,8 @@ namespace Guardian.Text.Generator.Web.Application.Handlers.Articles
 
         public async Task<GetContentResult> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
-            var articles = await _service.GetArticlesAsync(request);
-            var article = GetSingleRandomArticle(articles);
+            var article = await _service.GetArticlesAsync(request);
+            //var article = GetSingleRandomArticle(articles);
             var content = await _webscrapeService.GetPageContentAsync(article.webUrl);
 
             int count = Convert.ToInt32(request.RequestCount);
@@ -44,13 +44,12 @@ namespace Guardian.Text.Generator.Web.Application.Handlers.Articles
             return _result;
         }
 
-        private static Article GetSingleRandomArticle(Rootobject articles)
+        private static Article GetSingleRandomArticle(Article[] articles)
         {
             Random _rand = new Random();
-            var allArticles = articles.response.results;
-            var articlesCount= articles.response.results.Length;
+            var articlesCount= articles.Length;
             var randomArticleIndex = _rand.Next(0, articlesCount);
-            return allArticles[randomArticleIndex];
+            return articles[randomArticleIndex];
         }
     }
 }
