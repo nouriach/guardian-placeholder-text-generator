@@ -41,6 +41,7 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             {
                 RequestCount = !string.IsNullOrEmpty(characterRequest) ? characterRequest : wordRequest,
                 IsWordRequest = !string.IsNullOrEmpty(characterRequest) ? false : true,
+                Author = authorRequest
             };
             var result = await _mediator.Send(query, CancellationToken.None);
 

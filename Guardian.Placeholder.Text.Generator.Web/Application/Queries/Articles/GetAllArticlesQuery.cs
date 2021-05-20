@@ -8,5 +8,6 @@ namespace Guardian.Text.Generator.Web.Application.Queries.Articles
     {
         public string RequestCount { get; set; }
         public bool IsWordRequest { get; set; }
+        public string Author { get; set; }
     }
 }
