@@ -29,7 +29,7 @@ namespace Guardian.Text.Generator.Web.Application.Services
                 if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
                 {
                     var result = c.InnerHtml.CheckIfCopyContainsHtml() ? c.InnerHtml.RemoveHtmlFromString() : c.InnerHtml;
-                    copy.Add(result);
+                    copy.Add(result.RemoveCssFromString());
                 }
             }
 

@@ -15,7 +15,7 @@ namespace Guardian.Text.Generator.Web.Application.Services
             var result = await ApiService.SendRequestAndGetAuthorBio(query.Name);
             foreach (var value in result.response.results)
             {
-                if (GetResponseAuthorName(value) == query.Name.ToLower())
+                if (GetResponseAuthorName(value) == query.Name.ToLower().Trim())
                 {
                     Article article = new Article();
                     article = value;
@@ -27,7 +27,11 @@ namespace Guardian.Text.Generator.Web.Application.Services
 
         private static string GetResponseAuthorName(Article value)
         {
-            return value.tags[0].webTitle.ToLower();
+            if (value.tags.Length > 0)
+            {
+                return value.tags[0].webTitle.ToLower().Trim();
+            }
+            return null;
         }
     }
 }
