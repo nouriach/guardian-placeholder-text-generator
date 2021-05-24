@@ -26,7 +26,7 @@ namespace Guardian.Text.Generator.Web.Infrastructure.Api
         private static int _page;
         private static string _pageRequest = $"page=";
         public static string _query = "";
-        private static string _queryDate = "from-date=2018-01-01";
+        // private static string _queryDate = "from-date=2018-01-01";
         private static string _apiKey = "api-key=0ff89a23-392e-4b15-ad61-da8b70a6abd1";
 
         // For author bio
@@ -35,9 +35,10 @@ namespace Guardian.Text.Generator.Web.Infrastructure.Api
         private static string _showTags = "show-tags=contributor";
         private static string _section = "section=football";
 
-        public static async Task<Rootobject> SendRequestAndGetArticles()
+        public static async Task<Rootobject> SendRequestAndGetArticles(string author)
         {
-            GetRandomPageNumber();
+            SetAuthorQueryValue(author);
+            // GetRandomPageNumber();
             var jsonString = await SendGuardianRequest(BuildArticleApiCall());
             MapJsonToArticleModel(jsonString);
             return _articles;
@@ -70,7 +71,7 @@ namespace Guardian.Text.Generator.Web.Infrastructure.Api
 
         private static string BuildArticleApiCall()
         {
-            var url = $"{_urlBase}{_pageRequest}{_page}&{_query}&{_queryDate}&{_apiKey}";
+            var url = $"{_urlBase}{_showTags}&{_query}&{_apiKey}";
             return url;
         }
 
