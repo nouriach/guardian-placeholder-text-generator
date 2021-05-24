@@ -26,16 +26,22 @@ namespace Guardian.Text.Generator.Web.Application.Services
 
             foreach (var c in articleCopyRows)
             {
-                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified") && c.Children.Length == 0)
+                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
                 {
 
                     var result = c.InnerHtml.CheckIfCopyContainsHtml() ? c.InnerHtml.RemoveHtmlFromString() : c.InnerHtml;
-                    copy.Add(result.RemoveCssFromString());
+                    copy.Add(result);
                 }
             }
 
             RemoveArticleSubHeading(copy);
+            RemoveArticleCssContent(copy);
             return copy;
+        }
+
+        private void RemoveArticleCssContent(List<string> copy)
+        {
+            copy.RemoveAt(0);
         }
 
         private static void RemoveArticleSubHeading(List<string> copy)
