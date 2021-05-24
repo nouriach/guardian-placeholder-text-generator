@@ -45,16 +45,16 @@ namespace Guardian.Placeholder.Text.Generator.Web.Controllers
             };
             var result = await _mediator.Send(query, CancellationToken.None);
 
-            GetAuthorQuery authorQuery = new GetAuthorQuery()
-            {
-                Name = authorRequest
-            };
-            var authorResult = await _mediator.Send(authorQuery, CancellationToken.None);
+            //GetAuthorQuery authorQuery = new GetAuthorQuery()
+            //{
+            //    Name = authorRequest
+            //};
+            //var authorResult = await _mediator.Send(authorQuery, CancellationToken.None);
 
             GetAuthorsQuery authors = new GetAuthorsQuery();
             var authorsResult = await _mediator.Send(authors, CancellationToken.None);
 
-            AuthorViewModel author = new AuthorViewModel(authorResult);
+            AuthorViewModel author = new AuthorViewModel(result.AuthorInfo);
             ContentRequestViewModel contentRequestViewModel = new ContentRequestViewModel(authorsResult);
             ContentResultViewModel contentResult = new ContentResultViewModel(result);
 
