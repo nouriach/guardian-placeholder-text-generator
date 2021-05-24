@@ -26,11 +26,9 @@ namespace Guardian.Placeholder.Text.Generator.Web
         {
             services.AddControllersWithViews();
             services.AddMediatR(typeof(GetAllArticlesQuery).Assembly);
-            services.AddMediatR(typeof(GetAuthorQuery).Assembly);
 
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IWebscrapeService, WebscrapeService>();
-            services.AddScoped<IAuthorService, AuthorService>();
 
 
         }
