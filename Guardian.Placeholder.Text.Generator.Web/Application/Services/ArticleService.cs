@@ -1,5 +1,6 @@
 ﻿using Guardian.Text.Generator.Web.Application.Interfaces;
 using Guardian.Text.Generator.Web.Application.Queries.Articles;
+using Guardian.Text.Generator.Web.Extensions;
 using Guardian.Text.Generator.Web.Infrastructure.Api;
 using Guardian.Text.Generator.Web.Models;
 using System;
@@ -26,19 +27,19 @@ namespace Guardian.Text.Generator.Web.Application.Services
 
         private static Article GetArticlesWithCorrectAuthor(GetAllArticlesQuery query, Rootobject result)
         {
-            List<Article> test = new List<Article>();
-            
-            foreach(var t in result.response.results)
+            List<Article> articlesWithAuthorInfo = new List<Article>();
+
+            foreach (var articleResponse in result.response.results)
             {
-                if (t.tags.Length > 0)
+                if (HasAuthorInfo(articleResponse))
                 {
-                    test.Add(t);
+                    articlesWithAuthorInfo.Add(articleResponse);
                 }
             };
 
-            var articles = from t in test
-                                 where t.tags[0].webTitle.ToLower().Trim() == query.Author.ToLower().Trim()
-                                 select t;
+            var articles = from a in articlesWithAuthorInfo
+                           where IsArticleAuthorEqualToQueryAuthor(query, a) && IsArticleTypeEqualToArticle(a)
+                           select a;
 
             var articleArray = articles.ToArray();
             Random rnd = new Random();
@@ -49,6 +50,21 @@ namespace Guardian.Text.Generator.Web.Application.Services
                 return null;
 
             return article;
+        }
+
+        private static bool IsArticleTypeEqualToArticle(Article a)
+        {
+            return a.type.ToLowerAndTrim() == "article";
+        }
+
+        private static bool IsArticleAuthorEqualToQueryAuthor(GetAllArticlesQuery query, Article a)
+        {
+            return a.tags[0].webTitle.ToLowerAndTrim() == query.Author.ToLowerAndTrim();
+        }
+
+        private static bool HasAuthorInfo(Article articleResponse)
+        {
+            return articleResponse.tags.Length > 0;
         }
     }
 }
