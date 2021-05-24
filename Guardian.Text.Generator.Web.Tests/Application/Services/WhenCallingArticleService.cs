@@ -28,7 +28,7 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Services
             mockService.Setup(m => m.GetArticlesAsync(It.IsAny<GetAllArticlesQuery>())).Verifiable();
 
             // I guess this sets up how the Mock should act
-            mockService.Setup(m => m.GetArticlesAsync(It.IsAny<GetAllArticlesQuery>())).Returns(It.IsAny<Task<Rootobject>>());
+            mockService.Setup(m => m.GetArticlesAsync(It.IsAny<GetAllArticlesQuery>())).Returns(It.IsAny<Task<Article>>());
 
             var expected = It.IsAny<Task<Rootobject>>();
            

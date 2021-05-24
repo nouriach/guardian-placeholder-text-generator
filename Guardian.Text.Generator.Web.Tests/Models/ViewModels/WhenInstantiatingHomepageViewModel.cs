@@ -1,4 +1,5 @@
 ﻿using Guardian.Text.Generator.Web.Application.Results;
+using Guardian.Text.Generator.Web.Application.Results.Articles;
 using Guardian.Text.Generator.Web.Application.Results.Authors;
 using Guardian.Text.Generator.Web.Models;
 using Guardian.Text.Generator.Web.Models.ViewModels;
@@ -31,7 +32,17 @@ namespace Guardian.Text.Generator.Web.Tests.Models
                     }
             };
 
-            GetAuthorResult result = new GetAuthorResult(author);
+            Author result = new Author()
+            {
+                FirstName = "Barney",
+                LastName = "Ronay",
+                FullName = "Barney Ronay",
+                Bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
+                BylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                BylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                Url = "https://www.theguardian.com/profile/barneyronay",
+            };
+
             return new AuthorViewModel(result);
         }
         // Arrange

@@ -14,11 +14,17 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
         //Act
         //Assert
         [Test]
-        public static void And_Result_Contains_Ten_Articles()
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
+        public static void And_Result_Contains_Ten_Articles(string author)
         {
             //Arrange
             //Act
-            var result = ApiService.SendRequestAndGetArticles();
+            var result = ApiService.SendRequestAndGetArticles(author);
             var actual = result.Result.response.results.Length;
             var expected = 10;
             //Assert
@@ -26,11 +32,18 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
         }
 
         [Test]
-        public static void And_Result_Returns_Correct_Dto()
+        [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
+        public static void And_Result_Returns_Correct_Dto(string author)
         {
             //Arrange
             //Act
-            var result = ApiService.SendRequestAndGetArticles();
+            var result = ApiService.SendRequestAndGetArticles(author);
             //Assert
             Assert.IsInstanceOf<Rootobject>(result.Result);
         }

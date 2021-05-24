@@ -14,36 +14,28 @@ namespace Guardian.Text.Generator.Web.Tests.Models.ViewModels
         public void GivenConstructor_FillProperties_WithAuthorResult()
         {
             // Arrange
-            var author = new Article
-                        {
-                            tags = new[]
-                            {
-                                new Bio()
-                                {
-                                    webTitle = "Barney Ronay",
-                                    webUrl = "https://www.theguardian.com/profile/barneyronay",
-                                    bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
-                                    bylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
-                                    bylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
-                                    firstName = "Barney",
-                                    lastName = "Ronay"
-                                },
-                            }
-                        };
-
-            GetAuthorResult result = new GetAuthorResult(author);
+            Author result = new Author()
+            {
+                FirstName = "Barney",
+                LastName = "Ronay",
+                FullName = "Barney Ronay",
+                Bio = "<p>Barney Ronay is chief sports writer for the Guardian</p>",
+                BylineImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                BylineLargeImageUrl = "https://uploads.guim.co.uk/2018/05/25/Barney-Ronay.jpg",
+                Url = "https://www.theguardian.com/profile/barneyronay",
+            };
 
             //Act
             AuthorViewModel vm = new AuthorViewModel(result);
-            var expected = author.tags[0];
+            var expected = result;
 
             //Assert
             Assert.AreEqual(result.FirstName, vm.FirstName);
             Assert.AreEqual(result.LastName, vm.LastName);
             Assert.AreEqual(result.Url, vm.Url);
             Assert.AreEqual(result.Bio, vm.Bio);
-            Assert.AreEqual(result.AuthorImageSmall, vm.AuthorImageSmall);
-            Assert.AreEqual(result.AuthorImageLarge, vm.AuthorImageLarge);
+            Assert.AreEqual(result.BylineImageUrl, vm.AuthorImageSmall);
+            Assert.AreEqual(result.BylineLargeImageUrl, vm.AuthorImageLarge);
 
 
         }
