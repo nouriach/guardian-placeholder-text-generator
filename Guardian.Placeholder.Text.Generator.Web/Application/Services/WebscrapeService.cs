@@ -26,8 +26,9 @@ namespace Guardian.Text.Generator.Web.Application.Services
 
             foreach (var c in articleCopyRows)
             {
-                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified"))
+                if (!string.IsNullOrEmpty(c.InnerHtml) && !c.InnerHtml.Contains("modified") && c.Children.Length == 0)
                 {
+
                     var result = c.InnerHtml.CheckIfCopyContainsHtml() ? c.InnerHtml.RemoveHtmlFromString() : c.InnerHtml;
                     copy.Add(result.RemoveCssFromString());
                 }
