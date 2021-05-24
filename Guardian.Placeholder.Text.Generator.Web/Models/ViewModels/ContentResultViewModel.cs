@@ -5,10 +5,7 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
 {
     public class ContentResultViewModel
     {
-        public ContentResultViewModel()
-        {
-
-        }
+        public ContentResultViewModel(){}
         public ContentResultViewModel(GetContentResult result)
         {
             Content = result.Content;

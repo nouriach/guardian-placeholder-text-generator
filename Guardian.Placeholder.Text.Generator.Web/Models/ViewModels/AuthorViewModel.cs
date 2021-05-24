@@ -13,14 +13,14 @@ namespace Guardian.Text.Generator.Web.Models.ViewModels
         {
 
         }
-        public AuthorViewModel(GetAuthorResult author)
+        public AuthorViewModel(Author author)
         {
-            FirstName = author.FirstName;
-            LastName = author.LastName;
-            Url = author.Url;
-            Bio = author.Bio.RemoveNonBreakingSpaceFromString();
-            AuthorImageSmall = author.AuthorImageSmall;
-            AuthorImageLarge = author.AuthorImageLarge;
+            FirstName = author.FirstName ?? null;
+            LastName = author.LastName ?? null;
+            Url = author.Url ?? null;
+            Bio = author.Bio.RemoveNonBreakingSpaceFromString().RemoveHtmlFromString() ?? null;
+            AuthorImageSmall = author.BylineImageUrl ?? null;
+            AuthorImageLarge = author.BylineLargeImageUrl ?? null;
         }
 
         public string FirstName { get; set; }
