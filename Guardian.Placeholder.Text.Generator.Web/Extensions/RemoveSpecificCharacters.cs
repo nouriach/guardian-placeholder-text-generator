@@ -10,5 +10,17 @@ namespace Guardian.Text.Generator.Web.Extensions
             string cleanedCopy = str.Replace("&nbsp;", " ");
             return cleanedCopy;
         }
+
+        public static string RemoveCssFromString(this String str)
+        {
+            if (str.Contains("css"))
+            {
+                var firstIndex = str.IndexOf(".");
+                var lastIndex = str.LastIndexOf("}");
+                string cleanedCopy = str.Remove(firstIndex, lastIndex);
+                return cleanedCopy;
+            }
+            return str;
+        }
     }
 }
