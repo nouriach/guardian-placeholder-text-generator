@@ -12,8 +12,6 @@ namespace Guardian.Text.Generator.Web.Helpers
             {
                 return 0;
             }
-
-            // "CompareTo()" method
             return x.CompareTo(y);
         }
     }

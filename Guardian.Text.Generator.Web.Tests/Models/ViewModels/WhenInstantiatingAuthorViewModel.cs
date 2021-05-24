@@ -33,7 +33,7 @@ namespace Guardian.Text.Generator.Web.Tests.Models.ViewModels
             Assert.AreEqual(result.FirstName, vm.FirstName);
             Assert.AreEqual(result.LastName, vm.LastName);
             Assert.AreEqual(result.Url, vm.Url);
-            Assert.AreEqual(result.Bio, vm.Bio);
+            Assert.AreEqual("Barney Ronay is chief sports writer for the Guardian", vm.Bio);
             Assert.AreEqual(result.BylineImageUrl, vm.AuthorImageSmall);
             Assert.AreEqual(result.BylineLargeImageUrl, vm.AuthorImageLarge);
 

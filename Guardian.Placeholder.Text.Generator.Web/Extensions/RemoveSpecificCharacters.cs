@@ -17,7 +17,7 @@ namespace Guardian.Text.Generator.Web.Extensions
             {
                 var firstIndex = str.IndexOf(".");
                 var lastIndex = str.LastIndexOf("}");
-                string cleanedCopy = str.Remove(firstIndex,  (lastIndex + 1));
+                string cleanedCopy = str.Remove(firstIndex,  (lastIndex));
                 return cleanedCopy;
             }
             return str;
