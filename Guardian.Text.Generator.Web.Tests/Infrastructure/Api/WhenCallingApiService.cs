@@ -14,12 +14,13 @@ namespace Guardian.Text.Generator.Web.Tests.Infrastructure.Api
         //Act
         //Assert
         [Test]
-        [TestCase("Nick Ames")]
-        [TestCase("Scott Murray")]
-        [TestCase("Jacob Steinberg")]
-        [TestCase("David Hytner")]
-        [TestCase("John Ashdown")]
-        [TestCase("Jonathan Wilson")]
+        [TestCase("Barney Ronay")]
+        [TestCase("Nick Ames")]
+        [TestCase("Scott Murray")]
+        [TestCase("Jacob Steinberg")]
+        [TestCase("David Hytner")]
+        [TestCase("John Ashdown")]
+        [TestCase("Jonathan Wilson")]
         public static void And_Result_Contains_Ten_Articles(string author)
         {
             //Arrange
