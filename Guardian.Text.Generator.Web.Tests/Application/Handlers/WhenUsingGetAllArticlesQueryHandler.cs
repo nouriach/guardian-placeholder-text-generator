@@ -30,20 +30,21 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
-        [TestCase("350", true)]
-        [TestCase("250", true)]
-        [TestCase("100", false)]
-        [TestCase("300", true)]
-        [TestCase("150", true)]
-        [TestCase("200", false)]
-        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsContentResult(string requestCount, bool isWordRequest)
+        [TestCase("350", false, "Barney Ronay")]
+        [TestCase("250", false, "Barney Ronay")]
+        [TestCase("100", false, "Barney Ronay")]
+        [TestCase("300", false, "Barney Ronay")]
+        [TestCase("150", false, "Barney Ronay")]
+        [TestCase("200", false, "Barney Ronay")]
+        public async Task QueryHandler_ReceivesQuery_ThenResultIsReturnedFromService_AndIsContentResult(string requestCount, bool isWordRequest, string authorRequest)
         {
             // Arrange
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
                 RequestCount = requestCount,
-                IsWordRequest = isWordRequest
+                IsWordRequest = isWordRequest,
+                Author = authorRequest
             };
 
             IArticleService serv = new ArticleService();
@@ -58,20 +59,21 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
-        [TestCase("350", false)]
-        [TestCase("250", false)]
-        [TestCase("100", false)]
-        [TestCase("300", false)]
-        [TestCase("150", false)]
-        [TestCase("200", false)]
-        public async Task QueryHandler_ReceivesCharacterRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isNotWordRequest)
+        [TestCase("350", false, "Barney Ronay")]
+        [TestCase("250", false, "Barney Ronay")]
+        [TestCase("100", false, "Barney Ronay")]
+        [TestCase("300", false, "Barney Ronay")]
+        [TestCase("150", false, "Barney Ronay")]
+        [TestCase("200", false, "Barney Ronay")]
+        public async Task QueryHandler_ReceivesCharacterRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isNotWordRequest, string authorRequest)
         {
             // Arrange
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
                 RequestCount = characterCount,
-                IsWordRequest = isNotWordRequest
+                IsWordRequest = isNotWordRequest,
+                Author = authorRequest
             };
 
             IArticleService serv = new ArticleService();
@@ -87,20 +89,22 @@ namespace Guardian.Text.Generator.Web.Tests.Application.Handlers
         }
 
         [Test]
-        [TestCase("350", true)]
-        [TestCase("250", true)]
-        [TestCase("100", true)]
-        [TestCase("300", true)]
-        [TestCase("150", true)]
-        [TestCase("200", true)]
-        public async Task QueryHandler_ReceivesWordRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isWordRequest)
+        [TestCase("350", true, "Barney Ronay")]
+        [TestCase("250", true, "Barney Ronay")]
+        [TestCase("100", true, "Barney Ronay")]
+        [TestCase("300", true, "Barney Ronay")]
+        [TestCase("150", true, "Barney Ronay")]
+        [TestCase("200", true, "Barney Ronay")]
+
+        public async Task QueryHandler_ReceivesWordRequestQuery_ThenResultIsReturnedFromService_AndIsSameLengthAsRequest(string characterCount, bool isWordRequest, string authorRequest)
         {
             // Arrange
 
             GetAllArticlesQuery query = new GetAllArticlesQuery()
             {
                 RequestCount = characterCount,
-                IsWordRequest = isWordRequest
+                IsWordRequest = isWordRequest,
+                Author = authorRequest
             };
 
             IArticleService serv = new ArticleService();
